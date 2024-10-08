@@ -1,0 +1,121 @@
+.m-h{
+  min-height: 100vh;
+}
+
+
+/*navbar baclkground color*/
+.bg-blue{
+  background-color: #21336f;
+}
+
+/*contact form baclkground color*/
+.bg-form {
+  background-color: #162a53;
+  opacity: .8;
+}
+
+.bg-social{
+  background-color: #f9eded;
+  box-shadow: 5px 5px 5px grey;
+}
+
+.margin-top {
+  margin-top: 80px;
+}
+
+.navbar a {
+  padding: 0; /* Reset padding */
+  margin: 0; /* Reset margin */
+  text-decoration: none;
+  color: orange; /* Default link color */
+  line-height: normal; /* Control line height */
+}
+
+.navbar-collapse {
+  overflow: hidden;
+}
+
+.hover-link:hover {
+  color: white; /* Hover color */
+}
+
+
+
+.navbar .nav-link.active {
+  color: white; /* Active link color */
+  text-decoration: none; /* Ensure no underline */
+}
+
+/*.nav-link.active {
+  color: white !important; /* Force white color for active link */
+ /* text-decoration: none; /* Ensure no underline */
+/*}*/
+.card-body{
+  flex-grow: 1;
+}
+
+ .card-custom {
+            width: 18rem; /* Set a fixed width for the cards */
+          }
+
+/*color when hovering social links*/
+.text-w{
+  color: #25d366;
+}
+
+/*social link color*/
+.text-orange{
+  color: orange;
+}
+
+
+/* li{
+  color: #25d366;
+} */
+
+/*home styles */
+
+.section-one{
+  width: 100%;
+  background-size: cover;
+  background-image: url(./Photos/home.jpg)
+}
+
+.heading {
+  color: cyan;
+  font-weight: bolder;
+}
+
+/*contact page*/
+
+.contact{
+  background-image: url(./Photos/contact.jpg);
+  width: 100%;
+}
+
+/*margin on whatsapp */
+.whatsapp{
+position: fixed;
+top: 85%;
+left: 87%;
+text-align: right;
+z-index: 1000;
+min-width: 170px;
+max-width: 300px;
+text-decoration: none;
+background-color: #25d366;
+padding: 5px 10px;
+margin-right: 20px;
+border-radius: 10px;
+font-size: 16px;
+}
+
+.Link{
+  text-decoration: none;
+}
+
+.cms{
+  background-image: url(./Photos/admin.jpg);
+  width: 100%;
+  background-size: cover;
+}
