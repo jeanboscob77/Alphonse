@@ -1,9 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import { Link } from 'react-router-dom';
+import { useDispatch,useSelector } from 'react-redux';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import axios from 'axios';
+import { fetchBlogs } from '../redux/Blogs';
+import { fetchApi } from '../redux/ApiSlice';
 import {MdEdit,MdDelete,MdOutlineAddBox} from 'react-icons/md'
+
 
 
 const HomeTable = () => {
@@ -22,38 +25,19 @@ const HomeTable = () => {
 
 
 
-  const [blogs,setBlogs] = useState([])
-
-
+  const dispatch = useDispatch()
+  const blogs = useSelector(state=>state.blogs)
   useEffect(()=>{
-  axios.get('http://localhost:5000/api/blogs').then((res)=>{
-    if(res.data){
-      setBlogs(res.data)
-    }
-    
-  })
-  .then((error)=>{
-  console.log(error);
-  
-  })
-  
-  },[])
+    dispatch(fetchBlogs())
+  },)
 
 
 
  
 const handleDelete = (id)=>{
   const deletedPost = confirm('This will be deleted!!!')
-  deletedPost && axios.delete(`http://localhost:5000/api/blogs/${id}`).then((res)=>{
-    if(res.data){ 
-        setBlogs(blogs.filter(item=>item._id !== id))
-    }
-   
-   
-  }).catch((error)=>{
-    console.log(error);
-    
-  })
+  deletedPost && dispatch(fetchApi(`http://localhost:5000/api/blogs/${id}`))
+  window.location.reload()
 }
 
     
@@ -78,10 +62,10 @@ const handleDelete = (id)=>{
         </thead>
         <tbody>
             {
-                blogs.map((post,i)=><tr key={post._id}>
+                blogs.data.map((post,i)=><tr key={post._id}>
                     <td>{post.title}</td>
                     <td>{post.description}</td>
-                    <td><img src={`http://localhost:5000/${post.selectedFile.replace(/\\/g,'/')}`}
+                    <td><img src={`http://localhost:5000/${post.selectedFile}`}
                      alt='title'
                      width={30} height={30}/></td>
                     <td>{post.date}</td>

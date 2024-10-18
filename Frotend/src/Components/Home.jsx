@@ -1,14 +1,16 @@
-
+import { useDispatch , useSelector} from 'react-redux';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useState,useEffect } from 'react';
-import axios from 'axios';
+import {useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchBlogs } from '../redux/Blogs';
 
 const getRecentPosts = (blogs) => {
+
+
   const today = new Date();
   
-  return blogs
+  return blogs && blogs.length >0 && blogs
     .filter(post => {
       const postDate = new Date(post.createdAt);  // Parse createdAt date
       const diffTime = Math.abs(today - postDate);  // Time difference in milliseconds
@@ -21,6 +23,15 @@ const getRecentPosts = (blogs) => {
 
 const Home = () => {
 
+  const dispatch = useDispatch()
+  const Blogs = useSelector(state=>state.blogs)
+ 
+
+  useEffect(()=>{
+    dispatch(fetchBlogs())
+  },[])
+
+
   
   useEffect(() => {
     AOS.init({
@@ -32,33 +43,9 @@ const Home = () => {
   }, []);
 
 
-  
-const [blogs,setBlogs] = useState([])
-const [loading, setLoading] = useState(true);  // Loading state
 
 
-useEffect(()=>{
-axios.get('http://localhost:5000/api/blogs').then((res)=>{
-  if(res.data){
-    setBlogs(res.data)
-  }
-  
-})
-.then((error)=>{
-console.log(error);
-})
-.finally(() => {
-  setLoading(false);  // Stop loading after the data is fetched
-});
-}, []);
-
-
-
-const date = blogs.map(post=>post.createdAt)
-console.log(date);
-
-
-  const recentPosts = getRecentPosts(blogs);
+  const recentPosts = getRecentPosts(Blogs.data);
 
   return (
     <div className='pt-5 mt-5'>
@@ -73,8 +60,8 @@ console.log(date);
 
       {/* Recent Blog Posts Section */}
       {
-        loading?(
-          <p className="text-center text-light">Loading blog posts...</p>
+        Blogs.isLoading?(
+          <h1 className="text-center text-light">Loading blog posts...............</h1>
         ): 
         (
           <section className="mb-5">
@@ -114,14 +101,13 @@ console.log(date);
       <section className="mb-5">
         <h3 className="mb-4 text-light">Our Services</h3>
         <div className="row">
-          {blogs.map(post => (
-            <div className="col-md-4 d-flex" key={post.id}>
+          {Blogs.data && Blogs.data.length > 0 && Blogs.data.map(post => (<div className="col-md-4 d-flex" key={post._id}>
               <div className="card mb-4 h-100">
                 <img  src={`http://localhost:5000/${post.selectedFile.replace(/\\/g, '/')}`}
             alt={post.title} className='w-100 h-auto'/>
                 <div className="card-body d-flex flex-column flex-grow-1">
                   <h5 className="card-title">{post.title}</h5>
-                  <p className="card-text">{post.excerpt}</p>
+                  <p className="card-text">{post.description}</p>
                   <p className="card-text">
                     <small className="text-muted">Published on {new Date(post.createdAt).toLocaleDateString()}</small>
                   </p>

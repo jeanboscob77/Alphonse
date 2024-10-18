@@ -41,27 +41,32 @@ router.get('/services/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to retrieve service' });
     }
   });
-
-// Route to handle service creation with image upload
-router.post('/services', upload.single('selectedFile'), async (req, res) => {
-  try {
+  router.post('/services', upload.single('selectedFile'), async (req, res) => {
+    console.log('Received body:', req.body);  // Log incoming data
+    console.log('Received file:', req.file);  // Log uploaded file
+  
     const { title, description } = req.body;
     const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
-
-    // Create a new service document
-    const service = new Service({
+    
+    // Directly use the subServices from req.body
+    const subServices = JSON.parse(req.body.subServices); // Parse the subServices JSON string
+  
+    const newService = new Service({
       title,
       description,
       selectedFile,
+      subServices
     });
-
-    // Save the service in the database
-    await service.save();
-    res.status(201).json(service);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create service' });
-  }
-});
+  
+    try {
+      const savedService = await newService.save();
+      res.status(201).json(savedService);
+    } catch (err) {
+      console.error('Error:', err);
+      res.status(400).json({ message: err.message });
+    }
+  });
+  
 
 
 // Route to update a service by ID

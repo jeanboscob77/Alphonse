@@ -1,14 +1,14 @@
-import React,{useState,useEffect} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React,{useEffect} from 'react'
+import { Link} from 'react-router-dom'
+import { useDispatch,useSelector } from 'react-redux';
 import {MdEdit,MdDelete,MdOutlineAddBox} from 'react-icons/md'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import axios from 'axios'
+import { fetchApi } from '../redux/ApiSlice';
+import { fetchService } from '../redux/Services';
 
 const PostTable = () => {
 
-
-  const navigate = useNavigate()
   
   useEffect(() => {
     AOS.init({
@@ -21,36 +21,18 @@ const PostTable = () => {
 
 
 
-const [services,setServices] = useState([])
-
+const dispatch = useDispatch()
+const services = useSelector(state=>state.services)
 
 useEffect(()=>{
-axios.get('http://localhost:5000/api/services').then((res)=>{
-  if(res.data){
-    setServices(res.data)
-  }
-  
+  dispatch(fetchService())
 })
-.then((error)=>{
-console.log(error);
-
-})
-
-},[])
 
 
 const handleDelete = (id)=>{
   const deletedPost = confirm('This will be deleted!!!')
-  deletedPost && axios.delete(`http://localhost:5000/api/services/${id}`).then((res)=>{
-    if(res.data){ 
-        setServices(services.filter(item=>item._id !== id))
-    }
-   
-   
-  }).catch((error)=>{
-    console.log(error);
-    
-  })
+  deletedPost && dispatch(fetchApi(`http://localhost:5000/api/services/${id}`))
+   window.location.reload()
 }
 
 
@@ -73,10 +55,10 @@ const handleDelete = (id)=>{
         </thead>
         <tbody>
          {
-            services.map((item,i)=><tr key={item._id}>
+            services.data.map((item,i)=><tr key={item._id}>
                 <td>{item.title}</td>
                 <td>{item.description}</td>
-                <td><img  src={`http://localhost:5000/${item.selectedFile.replace(/\\/g,'/')}`} 
+                <td><img  src={`http://localhost:5000/${item.selectedFile}`} 
                  alt='title' width={30} height={30}/></td>
                 <td>
               

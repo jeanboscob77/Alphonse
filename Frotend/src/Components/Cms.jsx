@@ -1,14 +1,15 @@
-import React, { useState,useEffect} from "react";
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
+import { useDispatch } from "react-redux";
+import { loginUser, setUser } from '../redux/isLogged'; // Import the setUser action
+import { jwtDecode } from "jwt-decode";
 import 'aos/dist/aos.css';
 import CmsCard from "../Sub components/CmsCard";
 
-
-const AdminLoginForm = ({isLoggedIn}) => {
-
-const navigate = useNavigate()
-
+const AdminLoginForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     AOS.init({
@@ -17,47 +18,55 @@ const navigate = useNavigate()
       once: false,
       mirror: true      // Whether animation should happen only once
     });
-  }, []);
 
- // Initialize the formData state with username and password
- const [formData, setFormData] = useState({ username: "", password: "" });
- const [isLogged,setIsLogged] = useState(false)
+    // Check if a token exists in local storage on component mount
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user = jwtDecode(token); // Decode the token to get user information
+      dispatch(setUser(user)); // Set the user in the state (you'll need a setUser action)
+      navigate('/admin/dashboard'); // Navigate to dashboard if token exists
+    }
+  }, [navigate, dispatch]);
 
- const handleChange = (e) => {
-   // Update the formData state based on the input field changes
-   setFormData({ ...formData, [e.target.name]: e.target.value });
- };
+  // Initialize the formData state with email and password
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
- const handleLogin = (data) => {
-   // Handle the login logic here with the form data
-   console.log('Login data:', data);
-   if(formData.username === 'bosco' && formData.password ==='bosco'){
-     setIsLogged(!isLogged)
-     navigate('/admin/dashboard')
-   }
+  const handleChange = (e) => {
+    // Update the formData state based on the input field changes
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
- };
+  const handleLogin = async () => {
+  
 
-//  <button className='btn btn-success' onClick={handleLogout}>Log out</button>
+    // Dispatch the login action and await the result
+    const resultAction = await dispatch(loginUser({ email: formData.email, password: formData.password }));
 
-//handle log out buttton
- const handleLogout = ()=>{
- setIsLogged(!isLogged)
- }
+    // Check if the action was fulfilled
+    if (loginUser.fulfilled.match(resultAction)) {
+      const { token } = resultAction.payload; // Get the token from the payload
+      localStorage.setItem('token', token); // Store the token in local storage
 
+      const user = jwtDecode(token); // Decode the token to get user information
+      dispatch(setUser(user)); // Set the user in the state
+
+      navigate('/admin/dashboard'); // If login is successful, navigate to the dashboard
+    } else {
+      // If login fails, show an alert with the error message
+      alert(resultAction.error.message || 'Something went wrong');
+    }
+  };
 
   return (
     <div className='pt-5 mt-5'>
-        <div className="container-fluid d-flex justify-content-center align-items-center min-vh-100 pt-5 pb-3 cms"
-    data-aos='fade-down'>
-
-      <CmsCard 
-        handleSubmit={handleLogin} 
-        handleChange={handleChange} 
-        formData={formData} 
-        setIsLoggedIn={isLoggedIn}
-      />
-    </div>
+      <div className="container-fluid d-flex justify-content-center align-items-center min-vh-100 pt-5 pb-3 cms"
+        data-aos='fade-down'>
+        <CmsCard 
+          handleSubmit={handleLogin} 
+          handleChange={handleChange} 
+          formData={formData} 
+        />
+      </div>
     </div>
   );
 };

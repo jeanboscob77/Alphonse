@@ -1,17 +1,18 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const CmsCard = ({ handleSubmit, handleChange, formData ,setIsLoggedIn}) => {
+
+const CmsCard = ({ handleSubmit, handleChange, formData}) => {
+
+
   const onSubmit = (e) => {
     e.preventDefault();
     handleSubmit(formData); // Call the prop function with the formData
   };
 
-
+  const status = useSelector((state) => state.auth.status);
+  const error = useSelector((state) => state.auth.error);
  
-    const handleLogin = () => {
-      setIsLoggedIn(true);
-    };
-  
 
 
   return (
@@ -26,10 +27,10 @@ const CmsCard = ({ handleSubmit, handleChange, formData ,setIsLoggedIn}) => {
               Username
             </label>
             <input
-              type="text"
+              type="email"
               className="form-control"
-              id="username"
-              name="username"
+              id="email"
+              name="email"
               value={formData.username}
               onChange={handleChange} // Use the passed down function
               placeholder="Enter your username"
@@ -52,10 +53,12 @@ const CmsCard = ({ handleSubmit, handleChange, formData ,setIsLoggedIn}) => {
             />
           </div>
           <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-primary btn-lg" onClick={handleLogin}>
+            <button type="submit" className="btn btn-primary btn-lg">
               Login
             </button>
           </div>
+          {status === 'loading' && <p>Logging in...</p>}
+          {status === 'failed' && <p>Error: {error}</p>}
         </form>
       </div>
       <div className="card-footer text-center">

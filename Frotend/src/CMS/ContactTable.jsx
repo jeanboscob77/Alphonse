@@ -1,9 +1,8 @@
-import React,{useState,useEffect} from 'react'
-import { Link} from 'react-router-dom'
-
+import React,{useEffect} from 'react'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import axios from 'axios'
+import { useDispatch,useSelector } from 'react-redux';
+import { fetchApi } from '../redux/ApiSlice';
 
 const ContactTable = () => {
 
@@ -19,29 +18,19 @@ const ContactTable = () => {
   }, []);
 
 
+  const dispatch = useDispatch()
+  const contacts = useSelector(state=>state.api)
 
-const [contacts,setContacts] = useState([])
-
-
-useEffect(()=>{
-axios.get('http://localhost:5000/api/contacts').then((res)=>{
-  if(res.data){
-    setContacts(res.data)
-  }
-  
-})
-.then((error)=>{
-console.log(error);
-
-})
-
-},[])
-
-
+  useEffect(()=>{
+     dispatch(fetchApi('http://localhost:5000/api/contacts'))
+  },[])
 
 
   return (
     <div className='container'>
+    {
+      contacts.loading? <h1>Loading......</h1>:
+    
       <table className='table table-bordered table-hover table-responsive' data-aos='slide-up'>
         <thead>
         <tr className='table-dark'>
@@ -53,7 +42,7 @@ console.log(error);
         </thead>
         <tbody>
          {
-            contacts.map((item,i)=><tr key={item._id}>
+            contacts.data && contacts.data.length > 0 && contacts.data.map((item)=><tr key={item._id}>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.message}</td>
@@ -62,6 +51,7 @@ console.log(error);
          }
         </tbody>
       </table>
+    }
     </div>
   )
 }

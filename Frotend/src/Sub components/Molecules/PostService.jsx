@@ -1,74 +1,142 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const PostService = () => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    subServices: [
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' }
+    ]
+  });
 
-    const navigate = useNavigate()
+  const [selectedFile, setSelectedFile] = useState(null);
 
-const [selectedFile, setSelectedFile] = useState(null);
-
-
-//hangle file onchange
-const handleFileChange = (event) => {
-    // Access the file from event.target.files
-    const file = event.target.files[0];
-    setSelectedFile(file);
+  // Handle changes for input fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-const [title,setTitle] = useState('')
-const [description,setDescription] = useState('')
+  // Handle file input changes
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
+  // Handle changes for subservice fields
+  const handleSubServiceChange = (index, field, value) => {
+    const updatedSubServices = [...formData.subServices];
+    updatedSubServices[index][field] = value;
+    setFormData({ ...formData, subServices: updatedSubServices });
+  };
 
-  //handle submit 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Prepare the data using FormData to send the file along with other form fields
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('selectedFile', selectedFile); // Add the selected file
+
+    // Append subservices to FormData as a JSON string
+    data.append('subServices', JSON.stringify(formData.subServices)); 
 
     try {
-      const response = await axios.post('http://localhost:5000/api/services', {title,description,selectedFile}, {
+      // Send POST request to your API
+      const response = await axios.post('http://localhost:5000/api/services', data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       });
-
-      console.log('Service created successfully:', response.data);
-      navigate('/admin/dashboard')
+      console.log('Service Created:', response.data);
+      alert('Service created successfully');
     } catch (error) {
-      console.error('There was an error uploading the file!', error);
+      console.error('Error creating service:', error);
+      alert('Error creating service. Please try again.');
     }
   };
 
-
   return (
-    <div className='pt-5 mt-5'>
-        <form className='w-50 mx-auto'>
-            <div className='my-3'>
-            <label htmlFor='title' className='form-label'>Title:</label>
-                <input type='text' className='form-control' placeholder='Enter post title'
-                    value={title} onChange={(e)=>setTitle(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='description' className='form-label'>Description:</label>
-                <textarea type='text' className='form-control' placeholder='Enter description of your post...'
-                    value={description} onChange={(e)=>setDescription(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='file' className='form-label'>File:</label>
-            <input type="file" onChange={handleFileChange} className='form-control'/>
+    <form onSubmit={handleSubmit} className='pt-5 my-5 w-50 mx-auto bg-info px-5 border-rounded'>
+      <h2>Create a New Service</h2>
+      
+      <div>
+        <label className='form-label'>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required 
+          className='form-control'
+        />
+      </div>
 
-            </div>
-            <div className='w-100 d-flex justify-content-center'>
-            <div className='mx-auto'>
-            <button className='btn btn-primary' onClick={handleSubmit}>Save</button>
-            </div>
-           
-            </div>
-          
-        </form>
-    </div>
-  )
-}
+      <div>
+        <label className='form-label'>Description:</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-export default PostService
+      <div>
+        <label className='form-label'>Selected File (Image):</label>
+        <input
+          type="file"
+          name="selectedFile"
+          onChange={handleFileChange}
+          required
+          className='form-control'
+        />
+      </div>
+
+      <h3 className='my-2'>Sub Services</h3>
+      {formData.subServices.map((subService, index) => (
+        <div key={index}>
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Title:</label>
+            <input
+              type="text"
+              name={`title_${index + 1}`}
+              value={subService.title}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'title', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Notes:</label>
+            <textarea
+              name={`notes_${index + 1}`}
+              value={subService.notes}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'notes', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+        </div>
+      ))}
+      <div className='d-flex justify-content-center my-4'>
+        <button type="submit" className='btn btn-primary text-center'>Create Service</button>
+      </div>
+    </form>
+  );
+};
+
+export default PostService;
