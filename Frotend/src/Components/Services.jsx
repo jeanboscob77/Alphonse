@@ -1,4 +1,5 @@
 import React,{useEffect} from 'react'
+import { motion } from 'framer-motion'
 import { useDispatch,useSelector } from 'react-redux'
 import ServiceCard from '../Sub components/ServiceCard'
 import { fetchService } from '../redux/Services'
@@ -17,8 +18,6 @@ const Services = () => {
 
 
 
-  console.log(services);
-  
  
   return (
     <div className='margin-top container-fluid'>
@@ -27,8 +26,12 @@ const Services = () => {
       <p>Loading services....</p>
       )
       :(
-        <div>
-        <h1 className='text-center'>Service we offer</h1>
+        <div className='mt-4'>
+        <motion.h1 className='text-center'
+        initial={{translateX: -100, opacity: 0}}
+        animate={{translateX: 0, opacity: 1}}
+        transition={{duration: 5, type: 'spring'}}
+        >Service we offer</motion.h1>
     <div className='container m-5 d-flex flex-wrap justify-content-between'>
       {services.data && services.data.length > 0 && services.data.map((item) => (
         <div className='d-flex' key={item._id} style={{ flex: '1 1 calc(33.33% - 20px)', margin: '10px' }}>

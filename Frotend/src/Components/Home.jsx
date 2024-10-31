@@ -82,7 +82,7 @@ const Home = () => {
                       {new Date(post.createdAt).toLocaleDateString()}</small>
                     </p>
                     <div className='mt-auto'>                    
-                    <Link to={`/posts/${post._id}`} className="btn btn-success">Read More</Link>
+                    <Link to={`/blog/more/${post._id}`} className="btn btn-success">Read More</Link>
                     </div>
                   </div>
                 </div>
@@ -112,7 +112,7 @@ const Home = () => {
                     <small className="text-muted">Published on {new Date(post.createdAt).toLocaleDateString()}</small>
                   </p>
                   <div className='mt-auto'>
-                  <Link to={`/services/${post.id}`} className="btn btn-primary">Learn More</Link>
+                  <Link to={`/blog/more/${post._id}`} className="btn btn-primary">Learn More</Link>
                   </div>
                 </div>
               </div>

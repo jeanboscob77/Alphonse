@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 
 
-const SingleService = () => {
+const SingleBlog = () => {
 
 
     const {id} = useParams()
@@ -16,7 +16,7 @@ console.log(service);
 
 
 useEffect(()=>{
-   dispatch(fetchApi(`http://localhost:5000/api/services/${id}`))
+   dispatch(fetchApi(`http://localhost:5000/api/blogs/${id}`))
 },[])
 
   return (
@@ -36,8 +36,8 @@ useEffect(()=>{
           <div className="mb-4">{service['data'].description}</div>
           <div>
             <h4 className="mt-4">Sub-Services</h4>
-            {service.data.subServices && service.data.subServices.length > 0 ? (
-              service.data.subServices.map((item) => (
+            {service.data.moreInfo && service.data.moreInfo.length > 0 ? (
+              service.data.moreInfo.map((item) => (
                 <div key={item._id} className="mb-3">
                   <h4>{item.title}</h4>
                   <p>{item.notes}</p>
@@ -56,4 +56,4 @@ useEffect(()=>{
   )
 }
 
-export default SingleService
+export default SingleBlog

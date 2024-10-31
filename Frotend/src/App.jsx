@@ -15,6 +15,7 @@ import PostService from './Sub components/Molecules/PostService'
 import UpdateHome from './Sub components/Molecules/UpdateHome'
 import UpdateService from './Sub components/Molecules/UpdateService'
 import AdminDashBoard from './CMS/AdminDashBoard'
+import SingleBlog from "./Components/singleBlog";
  import { setUser } from "./redux/isLogged";
 import { jwtDecode } from "jwt-decode";
 
@@ -50,6 +51,7 @@ function App() {
         <Route path='/about' element={<AboutUs/>} />
         <Route path='/services' element={<Services/>} />
         <Route path='/service/more/:id' element={<SingleService/>}/>
+        <Route path='/blog/more/:id' element={<SingleBlog/>}/>
         <Route path='/contact' element={<Contact/>} />
         <Route path='/cms' element={<AdminLoginForm/>} />
         

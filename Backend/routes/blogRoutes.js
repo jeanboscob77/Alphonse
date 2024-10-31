@@ -46,12 +46,17 @@ router.post('/blogs', upload.single('selectedFile'), async (req, res) => {
   try {
     const { title, description } = req.body;
     const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+    
+    // Directly use the subServices from req.body
+    const moreInfo = JSON.parse(req.body.moreInfo); // Parse the subServices JSON string
+  
 
     // Create a new blog document
     const blog = new Blog({
       title,
       description,
       selectedFile,
+      moreInfo
     });
 
     // Save the blog in the database

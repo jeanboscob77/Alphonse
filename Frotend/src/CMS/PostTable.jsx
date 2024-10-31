@@ -26,7 +26,7 @@ const services = useSelector(state=>state.services)
 
 useEffect(()=>{
   dispatch(fetchService())
-})
+},[])
 
 
 const handleDelete = (id)=>{
@@ -44,6 +44,9 @@ const handleDelete = (id)=>{
                     <MdOutlineAddBox className='h1 mx-1'/>
                 </Link>
     </div>
+    {
+      services.loading ? <h1>Loading data.............</h1> : services.data.length >0 ?
+    
       <table className='table table-bordered table-hover table-responsive' data-aos='zoom-out'>
         <thead>
         <tr className='table-dark'>
@@ -74,6 +77,8 @@ const handleDelete = (id)=>{
          }
         </tbody>
       </table>
+       : <h1>You have no post yet Just add one or more if you want so👌👌</h1>
+        }
     </div>
   )
 }

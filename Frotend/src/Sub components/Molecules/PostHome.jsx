@@ -3,86 +3,145 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch} from 'react-redux';
 import { postData } from '../../redux/postData';
 
+
+       
+    
+
+
+
 const PostHome = () => {
+
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    moreInfo: [
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' }
+    ]
+  });
+
   const [selectedFile, setSelectedFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
 
-
-  // Handle file change
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
+  // Handle changes for input fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  // Handle submit
-  const handleSubmit =  (e) => {
+  // Handle file input changes
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  // Handle changes for subservice fields
+  const handleSubServiceChange = (index, field, value) => {
+    const updatedSubServices = [...formData.moreInfo];
+    updatedSubServices[index][field] = value;
+    setFormData({ ...formData, moreInfo: updatedSubServices });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create FormData object to handle file uploads
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('selectedFile', selectedFile);  // Ensure file is appended properly
-
-    // Dispatch the action to post data
- 
-      const result = dispatch(postData(formData));
-      if(result){
-        navigate('/admin/dashboard');
-      }
-       
     
-  };
+    // Prepare the data using FormData to send the file along with other form fields
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('selectedFile', selectedFile); // Add the selected file
+
+    // Append subservices to FormData as a JSON string
+    data.append('moreInfo', JSON.stringify(formData.moreInfo)); 
+
+    const result = dispatch(postData(data));
+    if(result){
+      navigate('/admin/dashboard');
+    }
+  }
 
   return (
-    <div className='pt-5 mt-5'>
-      <form className='w-50 mx-auto' onSubmit={handleSubmit}>
-        <div className='my-3'>
-          <label htmlFor='title' className='form-label'>Title:</label>
-          <input
-            type='text'
-            className='form-control'
-            placeholder='Enter post title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
+    <form onSubmit={handleSubmit} className='pt-5 my-5 w-50 mx-auto bg-info px-5 border-rounded'>
+      <h2>Create a New Service</h2>
+      
+      <div>
+        <label className='form-label'>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required 
+          className='form-control'
+        />
+      </div>
 
-        <div className='mb-3'>
-          <label htmlFor='description' className='form-label'>Description:</label>
-          <textarea
-            type='text'
-            className='form-control'
-            placeholder='Enter description of your post...'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
+      <div>
+        <label className='form-label'>Description:</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-        <div className='mb-3'>
-          <label htmlFor='file' className='form-label'>File:</label>
-          <input
-            type='file'
-            onChange={handleFileChange}
-            className='form-control'
-            required
-          />
-        </div>
+      <div>
+        <label className='form-label'>Selected File (Image):</label>
+        <input
+          type="file"
+          name="selectedFile"
+          onChange={handleFileChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-        <div className='w-100 d-flex justify-content-center'>
-          <button className='btn btn-primary' type='submit'>
-            Save
-          </button>
-        </div>
+      <h3 className='my-2'>Sub Services</h3>
+      {formData.moreInfo.map((moreInfo, index) => (
+        <div key={index}>
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Title:</label>
+            <input
+              type="text"
+              name={`title_${index + 1}`}
+              value={moreInfo.title}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'title', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
 
-      </form>
-    </div>
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Notes:</label>
+            <textarea
+              name={`notes_${index + 1}`}
+              value={moreInfo.notes}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'notes', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+        </div>
+      ))}
+      <div className='d-flex justify-content-center my-4'>
+        <button type="submit" className='btn btn-primary text-center'>Create Service</button>
+      </div>
+    </form>
   );
 };
 

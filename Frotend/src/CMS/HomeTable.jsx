@@ -29,7 +29,7 @@ const HomeTable = () => {
   const blogs = useSelector(state=>state.blogs)
   useEffect(()=>{
     dispatch(fetchBlogs())
-  },)
+  },[])
 
 
 
@@ -49,6 +49,8 @@ const handleDelete = (id)=>{
                     <MdOutlineAddBox className='h1 mx-1'/>
                 </Link>
     </div>
+   {
+    blogs.loading ? <h1>Loading......</h1> : blogs.data.length > 0?
    
       <table className='table table-bordered table-hover table-responsive' data-aos='zoom-in'>
         <thead>
@@ -83,6 +85,8 @@ const handleDelete = (id)=>{
             }
         </tbody>
       </table>
+     : <h1>Please add new Blog because you don't have<span className='text-danger'> any blog post for now</span></h1>
+          }
     </div>
   )
 }

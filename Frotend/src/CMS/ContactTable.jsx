@@ -29,7 +29,7 @@ const ContactTable = () => {
   return (
     <div className='container'>
     {
-      contacts.loading? <h1>Loading......</h1>:
+      contacts.loading? <h1>Loading......</h1>: contacts.data.length >0?
     
       <table className='table table-bordered table-hover table-responsive' data-aos='slide-up'>
         <thead>
@@ -51,6 +51,7 @@ const ContactTable = () => {
          }
         </tbody>
       </table>
+      : <h1 className='text-center text-warning'>No people contacted you 😭😭😭</h1>
     }
     </div>
   )
