@@ -24,14 +24,14 @@ const [message,setMessage] = useState('')
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(name.trim() !== '' && email.trim() && message.trim()){
+    if(name.trim() !== '' && email.trim() !== '' && message.trim() !== ''){
 
       axios.post('http://localhost:5000/api/contacts',{name,email,message}).then((res)=>{
       
         setEmail('')
         setMessage('')
         setName('')
-      
+       alert('Thank You, Your Message received!!')
      })
      .then((error)=>{
      console.log(error)

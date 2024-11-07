@@ -157,5 +157,14 @@ font-size: 16px;
 .text{
   text-decoration: none;
   color: #E5E7EB;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: serif;
+}
+
+
+.address{
+  border-top: 2px solid white;
+  margin: 20px 30px;
+}
+address{
+  padding-top: 20px;
 }

@@ -28,7 +28,7 @@ const Footer = () => {
   
   return (
     <div className='bg-dark mt-auto pt-3'>
-      <section className='d-flex'>
+      <section className='d-flex flex-wrap justify-content-between mx-5 py-5'>
     <div className='d-flex justify-content-start'>
     <ul className='d-flex list-unstyled gap-4 mx-5'>
       <motion.li  
@@ -120,7 +120,7 @@ onMouseLeave={() => setIsLinkHovered('')}
     {
       services.data && services.data.length >
        0 && services.data.length <= 10 && services.data.map((item)=>(
-        <li key={item._id}><Link to={`/service/details/${item._id}`}
+        <li key={item._id} className=''><Link to={`/service/details/${item._id}`}
         className='text'
 >
           {capitalizeText(item.title)}</Link></li>
@@ -128,8 +128,22 @@ onMouseLeave={() => setIsLinkHovered('')}
     }
   </ul>
 </div>
+
 </section>
-      <p className='text-center text-light'>Info tech scholars ltd allright reserved &copy; {new Date().getFullYear()}</p>
+
+
+<div className='d-flex justify-content-center address'>
+<address className='text-light'>
+        INFO TECH SCHOLARS LTD.<br/>
+        Kigali, Rwanda<br/>
+       Email: <a href="mailto:infotechscholars1@gmail.com?subject=Hello%20there&body=I%20am%20interested%20in%20your%20services.">
+        infotechscholars1@gmail.com
+          </a><br/>
+        Phone: +250 783 871 348
+    </address>
+</div>
+
+      <p className='text-center text-light'>Info tech scholars Ltd allright reserved &copy; {new Date().getFullYear()}</p>
     </div>
   )
 }

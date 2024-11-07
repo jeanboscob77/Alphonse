@@ -31,7 +31,7 @@ const Services = () => {
         initial={{translateX: -100, opacity: 0}}
         animate={{translateX: 0, opacity: 1}}
         transition={{duration: 5, type: 'spring'}}
-        >Service we offer</motion.h1>
+        >Our Services</motion.h1>
     <div className='container m-5 d-flex flex-wrap justify-content-between'>
       {services.data && services.data.length > 0 && services.data.map((item) => (
         <div className='d-flex' key={item._id} style={{ flex: '1 1 calc(33.33% - 20px)', margin: '10px' }}>
