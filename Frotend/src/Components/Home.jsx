@@ -48,10 +48,23 @@ const Home = () => {
 
   return (
     <div className="pt-5 mt-5 holder" data-aos='fade-down'>
-      <Helmet>
-        <title>Home</title>
-      </Helmet>
-      
+     <Helmet>
+  <title>Info Tech Scholars Ltd - Home | Pathway to Academic and Tech Solutions</title>
+  <meta name="description" content="Welcome to Info Tech Scholars Ltd, your gateway to academic excellence and cutting-edge tech solutions. Discover recent insights, services, and resources tailored to empower your journey." />
+
+  <meta property="og:title" content="Info Tech Scholars Ltd - Your Pathway to Academic & Tech Solutions" />
+  <meta property="og:description" content="Explore Info Tech Scholars Ltd to discover recent blogs, academic guidance, and technology solutions crafted for you." />
+  <meta property="og:image" content="https://www.infotechscholars.com/og-image.jpg" />
+  <meta property="og:url" content="https://www.infotechscholars.com" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Info Tech Scholars Ltd - Academic & Tech Insights" />
+  <meta name="twitter:description" content="Stay updated with our recent posts and services at Info Tech Scholars Ltd." />
+  <meta name="twitter:image" content="https://www.infotechscholars.com/twitter-image.jpg" />
+
+  {/* <meta name="description" content={`Recent Posts: ${recentPosts.slice(0, 3).map(post => post.title).join(", ")}. Discover more at Info Tech Scholars Ltd.`} /> */}
+</Helmet>
+
       <motion.section
         className="section-one pt-5"
         data-aos="slide-left"

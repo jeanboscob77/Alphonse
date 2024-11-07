@@ -38,9 +38,9 @@ const Services = () => {
                 key={item._id}
                 className="d-flex"
                 style={{ flex: '1 1 calc(33.33% - 20px)', margin: '10px' }}
-                initial={{ opacity: 0, scale: 0.8 }}  // Start smaller
+                initial={{ opacity: 0, scale: 0.2 }}  // Start smaller
                 whileInView={{ opacity: 1, scale: 1 }}  // Zoom in and become fully visible
-                transition={{ duration: 0.6 }}           // Smooth transition for zoom effect
+                transition={{ duration: 0.8 }}           // Smooth transition for zoom effect
                 viewport={{ once: false, amount: 0.3 }} // Trigger when 30% of the element is in view
               >
                 <ServiceCard
