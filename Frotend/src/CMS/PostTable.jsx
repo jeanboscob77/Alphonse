@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { fetchApi } from '../redux/ApiSlice';
 import { fetchService } from '../redux/Services';
+import axios from 'axios';
 
 const PostTable = () => {
 
@@ -31,7 +32,7 @@ useEffect(()=>{
 
 const handleDelete = (id)=>{
   const deletedPost = confirm('This will be deleted!!!')
-  deletedPost && dispatch(fetchApi(`http://localhost:5000/api/services/${id}`))
+  deletedPost && axios.delete(`http://localhost:5000/api/services/${id}`)
    window.location.reload()
 }
 

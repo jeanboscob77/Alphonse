@@ -1,90 +1,153 @@
-import axios from 'axios'
-import React, { useState,useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const UpdateService = () => {
+
 const {id} = useParams()
-const navigate = useNavigate()
 
-const [selectedFile, setSelectedFile] = useState(null);
-//hangle file onchange
-const handleFileChange = (event) => {
-  // Access the file from event.target.files
-  const file = event.target.files[0];
-  setSelectedFile(file);
-};
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    subServices: [
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' }
+    ]
+  });
 
-const [title,setTitle] = useState('')
-const [description,setDescription] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  useEffect(() => {
+    // Fetch existing service data on component load
+    const fetchService = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/services/${id}`);
+        const { title, description, subServices } = response.data;
+        setFormData({ title, description, subServices });
+      } catch (error) {
+        console.error('Error fetching service data:', error);
+      }
+    };
+    fetchService();
+  }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-useEffect(()=>{
-    axios.get(`http://localhost:5000/api/services/${id}`).then((res)=>{
-        
-        setTitle(res.data.title)
-        setDescription(res.data.description)
-        setSelectedFile(res.data.selectedFile)
-    }).catch((error)=>{
-      console.log(error);
-      
-    })
-   },[])
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
+  const handleSubServiceChange = (index, field, value) => {
+    const updatedSubServices = [...formData.subServices];
+    updatedSubServices[index][field] = value;
+    setFormData({ ...formData, subServices: updatedSubServices });
+  };
 
-
-
-  //handle update
-  const handleUpdate = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    if (selectedFile) {
+      data.append('selectedFile', selectedFile);
+    }
+    data.append('subServices', JSON.stringify(formData.subServices));
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/services/${id}`, {title,description,selectedFile}, {
+      const response = await axios.put(`http://localhost:5000/api/services/${id}`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       });
-
-      console.log('Service created successfully:', response.data);
-      navigate('/admin/dashboard')
+      console.log('Service Updated:', response.data);
+      alert('Service updated successfully');
     } catch (error) {
-      console.error('There was an error uploading the file!', error);
+      console.error('Error updating service:', error);
+      alert('Error updating service. Please try again.');
     }
   };
 
-
-
-
   return (
-    <div className='pt-5 mt-5'>
-        <form className='w-50 mx-auto'>
-            <div className='my-3'>
-            <label htmlFor='title' className='form-label'>Title:</label>
-                <input type='text' className='form-control' placeholder='Enter book title'
-                    value={title} onChange={(e)=>setTitle(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='description' className='form-label'>Description:</label>
-                <textarea type='text' className='form-control' placeholder='Enter description of your post...'
-                    value={description} onChange={(e)=>setDescription(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='file' className='form-label'>File:</label>
-            <input type="file" onChange={handleFileChange} className='form-control'/>
+    <form onSubmit={handleSubmit} className='pt-5 my-5 w-50 mx-auto bg-info px-5 border-rounded'>
+      <h2>Update Service</h2>
+      
+      <div>
+        <label className='form-label'>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required 
+          className='form-control'
+        />
+      </div>
 
-            </div>
-            <div className='w-100 d-flex justify-content-center'>
-            <div className='mx-auto'>
-            <button className='btn btn-primary' onClick={handleUpdate}>Update</button>
-            </div>
-           
-            </div>
-          
-        </form>
-    </div>
-  )
-}
+      <div>
+        <label className='form-label'>Description:</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-export default UpdateService
+      <div>
+        <label className='form-label'>Selected File (Image):</label>
+        <input
+          type="file"
+          name="selectedFile"
+          onChange={handleFileChange}
+          className='form-control'
+        />
+      </div>
+
+      <h3 className='my-2'>Sub Services</h3>
+      {formData.subServices.map((subService, index) => (
+        <div key={index}>
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Title:</label>
+            <input
+              type="text"
+              name={`title_${index + 1}`}
+              value={subService.title}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'title', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+
+          <div>
+            <label className='form-label'>Sub Service {index + 1} Notes:</label>
+            <textarea
+              name={`notes_${index + 1}`}
+              value={subService.notes}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'notes', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+        </div>
+      ))}
+      <div className='d-flex justify-content-center my-4'>
+        <button type="submit" className='btn btn-primary text-center'>Update Service</button>
+      </div>
+    </form>
+  );
+};
+
+export default UpdateService;

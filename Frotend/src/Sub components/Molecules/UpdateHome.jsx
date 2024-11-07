@@ -1,94 +1,148 @@
-import axios from 'axios'
-import React, { useState,useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const UpdateHome = () => {
-const {id} = useParams()
-const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { id } = useParams(); // Get the ID of the post to update
 
-const [selectedFile, setSelectedFile] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    moreInfo: [
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' },
+      { title: '', notes: '' }
+    ]
+  });
 
+  const [selectedFile, setSelectedFile] = useState(null);
 
-//hangle file onchange
-const handleFileChange = (event) => {
-  // Access the file from event.target.files
-  const file = event.target.files[0];
-  setSelectedFile(file);
-};
+  useEffect(() => {
+    // Fetch the existing post data using Axios
+    axios.get(`http://localhost:5000/api/blogs/${id}`)
+      .then(response => {
+        const { title, description, moreInfo } = response.data;
+        setFormData({
+          title: title || '',
+          description: description || '',
+          moreInfo: moreInfo || formData.moreInfo
+        });
+      })
+      .catch(error => {
+        console.error("There was an error fetching the post data!", error);
+      });
+  }, [id]);
 
-const [title,setTitle] = useState('')
-const [description,setDescription] = useState('')
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
+  const handleSubServiceChange = (index, field, value) => {
+    const updatedSubServices = [...formData.moreInfo];
+    updatedSubServices[index][field] = value;
+    setFormData({ ...formData, moreInfo: updatedSubServices });
+  };
 
-
-useEffect(()=>{
-    axios.get(`http://localhost:5000/api/blogs/${id}`).then((res)=>{
-        
-        setTitle(res.data.title)
-        setDescription(res.data.description)
-        setSelectedFile(res.data.selectedFile)
-    }).catch((error)=>{
-      console.log(error);
-      
-    })
-   },[])
-
-
-
-   
-  //handle update
-  const handleUpdate = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    if (selectedFile) data.append('selectedFile', selectedFile);
+    data.append('moreInfo', JSON.stringify(formData.moreInfo));
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/blogs/${id}`, {title,description,selectedFile}, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log('Service created successfully:', response.data);
-      navigate('/admin/dashboard')
+      await axios.put(`http://localhost:5000/api/blogs/${id}`, data);
+      navigate('/admin/dashboard');
     } catch (error) {
-      console.error('There was an error uploading the file!', error);
+      console.error("There was an error updating the post!", error);
     }
   };
 
-
   return (
-    <div className='pt-5 mt-5'>
-    <div className='mt-3 mx-5'>
-    <button className='btn btn-success' onClick={()=>navigate('/cms')}>👈</button>
-    </div>
-        <form className='w-50 mx-auto'>
-            <div className='my-3'>
-            <label htmlFor='title' className='form-label'>Title:</label>
-                <input type='text' className='form-control' placeholder='Enter post title...'
-                    value={title} onChange={(e)=>setTitle(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='description' className='form-label'>Description:</label>
-                <textarea type='text' className='form-control' placeholder='Enter description of your post...'
-                    value={description} onChange={(e)=>setDescription(e.target.value)}
-                />
-            </div>
-            <div className='mb-3'>
-            <label htmlFor='file' className='form-label'>File:</label>
-            <input type="file" onChange={handleFileChange} className='form-control'/>
+    <form onSubmit={handleSubmit} className='pt-5 my-5 w-50 mx-auto bg-info px-5 border-rounded'>
+      <h2>Update Blog Post</h2>
+      
+      <div>
+        <label className='form-label'>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-            </div>
-            <div className='w-100 d-flex justify-content-center'>
-            <div className='mx-auto'>
-            <button className='btn btn-primary' onClick={handleUpdate}>Update</button>
-            </div>
-           
-            </div>
-          
-        </form>
-    </div>
-  )
-}
+      <div>
+        <label className='form-label'>Description:</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+          className='form-control'
+        />
+      </div>
 
-export default UpdateHome
+      <div>
+        <label className='form-label'>Selected File (Image):</label>
+        <input
+          type="file"
+          name="selectedFile"
+          onChange={handleFileChange}
+          className='form-control'
+        />
+      </div>
+
+      <h3 className='my-2'>Sub Services</h3>
+      {formData.moreInfo.map((moreInfo, index) => (
+        <div key={index}>
+          <div>
+            <label className='form-label'>More details about blog post {index + 1} Title:</label>
+            <input
+              type="text"
+              name={`title_${index + 1}`}
+              value={moreInfo.title}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'title', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+
+          <div>
+            <label className='form-label'>More details {index + 1} Notes:</label>
+            <textarea
+              name={`notes_${index + 1}`}
+              value={moreInfo.notes}
+              onChange={(e) =>
+                handleSubServiceChange(index, 'notes', e.target.value)
+              }
+              className='form-control'
+            />
+          </div>
+        </div>
+      ))}
+
+      <div className='d-flex justify-content-center my-4'>
+        <button type="submit" className='btn btn-primary text-center'>Update Post</button>
+      </div>
+    </form>
+  );
+};
+
+export default UpdateHome;

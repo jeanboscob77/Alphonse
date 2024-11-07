@@ -7,6 +7,7 @@ import AboutUs from './Components/About'
 import Services from './Components/Services'
 import SingleService from "./Components/SingleService";
 import Contact from './Components/Contact'
+import DetailedService from "./Components/MoreAboutService";
 import AdminLoginForm from './Components/Cms'
 import Footer from './Components/Footer'
 import Whatsapp from './Sub components/Whatsapp'
@@ -51,6 +52,7 @@ function App() {
         <Route path='/about' element={<AboutUs/>} />
         <Route path='/services' element={<Services/>} />
         <Route path='/service/more/:id' element={<SingleService/>}/>
+        <Route path='/service/details/:id' element={<DetailedService/>}/>
         <Route path='/blog/more/:id' element={<SingleBlog/>}/>
         <Route path='/contact' element={<Contact/>} />
         <Route path='/cms' element={<AdminLoginForm/>} />

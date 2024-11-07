@@ -66,14 +66,14 @@ const PostHome = () => {
     data.append('moreInfo', JSON.stringify(formData.moreInfo)); 
 
     const result = dispatch(postData(data));
-    if(result){
-      navigate('/admin/dashboard');
-    }
+    // if(result){
+    //   navigate('/admin/dashboard');
+    // }
   }
 
   return (
     <form onSubmit={handleSubmit} className='pt-5 my-5 w-50 mx-auto bg-info px-5 border-rounded'>
-      <h2>Create a New Service</h2>
+      <h2>Create a New blog Post</h2>
       
       <div>
         <label className='form-label'>Title:</label>
@@ -113,7 +113,7 @@ const PostHome = () => {
       {formData.moreInfo.map((moreInfo, index) => (
         <div key={index}>
           <div>
-            <label className='form-label'>Sub Service {index + 1} Title:</label>
+            <label className='form-label'>More details about blog post{index + 1} Title:</label>
             <input
               type="text"
               name={`title_${index + 1}`}
@@ -126,7 +126,7 @@ const PostHome = () => {
           </div>
 
           <div>
-            <label className='form-label'>Sub Service {index + 1} Notes:</label>
+            <label className='form-label'>More details {index + 1} Notes:</label>
             <textarea
               name={`notes_${index + 1}`}
               value={moreInfo.notes}

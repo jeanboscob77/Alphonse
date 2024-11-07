@@ -72,10 +72,13 @@ router.put('/blogs/:id', upload.single('selectedFile'), async (req, res) => {
   try {
     const { title, description } = req.body;
     const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+     // Directly use the subServices from req.body
+     const moreInfo = JSON.parse(req.body.moreInfo); // Parse the subServices JSON string
+  
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
-      { title, description, selectedFile },
+      { title, description, selectedFile,moreInfo },
       { new: true } // Return the updated document
     );
 

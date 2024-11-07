@@ -10,6 +10,7 @@ const SingleService = () => {
 
 
     const {id} = useParams()
+    
 const dispatch = useDispatch()
 const service = useSelector(state=>state.api)
 console.log(service);
@@ -25,7 +26,11 @@ useEffect(()=>{
     {service.loading ? (
       <h2 className="text-center">Loading...</h2>
     ) : (
-      <div className="row">
+      <motion.div className="row"
+      initial={{translateY: '-100%', opacity: 0}}
+      animate={{translateY: 0, opacity: 1}}
+      transition={{duration: 1, type: 'keyframes'}}
+      >
         <div className="col-md-8 offset-md-2">
           <h3 className="mt-5 text-center">{service['data'].title}</h3>
           <img
@@ -35,7 +40,7 @@ useEffect(()=>{
           />
           <div className="mb-4">{service['data'].description}</div>
           <div>
-            <h4 className="mt-4">Sub-Services</h4>
+            <h4 className="mt-4">Our service includes</h4>
             {service.data.subServices && service.data.subServices.length > 0 ? (
               service.data.subServices.map((item) => (
                 <div key={item._id} className="mb-3">
@@ -48,7 +53,7 @@ useEffect(()=>{
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     )}
   </div>
 </div>

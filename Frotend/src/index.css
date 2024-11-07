@@ -5,7 +5,7 @@
 
 /*navbar baclkground color*/
 .bg-blue{
-  background-color: #21336f;
+  background-color: #1F2937;
 }
 
 /*contact form baclkground color*/
@@ -27,8 +27,9 @@
   padding: 0; /* Reset padding */
   margin: 0; /* Reset margin */
   text-decoration: none;
-  color: orange; /* Default link color */
+  color: #E5E7EB; /* Default link color */
   line-height: normal; /* Control line height */
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .navbar-collapse {
@@ -36,13 +37,13 @@
 }
 
 .hover-link:hover {
-  color: white; /* Hover color */
+  color: #25d366; /* Hover color */
 }
 
 
 
 .navbar .nav-link.active {
-  color: white; /* Active link color */
+  color: #25d366; /* Active link color */
   text-decoration: none; /* Ensure no underline */
 }
 
@@ -75,10 +76,10 @@
 
 /*home styles */
 
-.section-one{
+.holder{
   width: 100%;
   background-size: cover;
-  background-image: url(./Photos/home.jpg)
+  background-image: linear-gradient(rgba(81, 81, 207, 0.779), rgba(0, 0, 255, 0.3)), url(./Photos/better.jpg);
 }
 
 .heading {
@@ -130,4 +131,31 @@ font-size: 16px;
 .light{
   background-color: white;
   color: black;
+}
+
+.logo{
+  border-radius: 50%;
+}
+
+.header{
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.font-family{
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+}
+
+.active-link {
+  color: #25d366;
+}
+
+
+
+
+
+.text{
+  text-decoration: none;
+  color: #E5E7EB;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }

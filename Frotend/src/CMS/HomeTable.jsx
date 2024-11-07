@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 import { fetchBlogs } from '../redux/Blogs';
 import { fetchApi } from '../redux/ApiSlice';
 import {MdEdit,MdDelete,MdOutlineAddBox} from 'react-icons/md'
+import axios from 'axios';
 
 
 
@@ -36,7 +37,7 @@ const HomeTable = () => {
  
 const handleDelete = (id)=>{
   const deletedPost = confirm('This will be deleted!!!')
-  deletedPost && dispatch(fetchApi(`http://localhost:5000/api/blogs/${id}`))
+  deletedPost && axios.delete(`http://localhost:5000/api/blogs/${id}`)
   window.location.reload()
 }
 

@@ -48,14 +48,14 @@ const Home = () => {
   const recentPosts = getRecentPosts(Blogs.data);
 
   return (
-    <div className='pt-5 mt-5'>
+    <div className='pt-5 mt-5 holder'>
      
       <section className='section-one pt-5' data-aos='slide-left'>
       <div className="container">
       {/* Header Section */}
       <header className="text-center my-4">
-        <h1 className="display-4 heading pt-3">INFO TECH SCHOLARS LTD</h1>
-        <p className="lead fw-bold text-light">Innovative Services for Your Educational and Career Success</p>
+        <h1 className="display-4 heading pt-3 header">INFO TECH SCHOLARS LTD</h1>
+        <p className="lead fw-bold text-light fs-3">Pathway to Academic and Tech Solutions.</p>
       </header>
 
       {/* Recent Blog Posts Section */}
@@ -69,17 +69,16 @@ const Home = () => {
         <div className="row">
           {recentPosts.length > 0 ? (
             recentPosts.map(post => (
-              <div className="col-md-4 d-flex" key={post._id}>
+              <div className="col-md-4 d-flex my-2" key={post._id}>
                 <div className="card mb-4 h-100">
-                <img  src={`http://localhost:5000/${post.selectedFile.replace(/\\/g, '/')}`}
+                <img  src={`http://localhost:5000/${post.selectedFile}`}
             alt={post.title}
             className='w-100 h-auto'/>
                   <div className="card-body d-flex flex-column flex-grow-1">
-                    <h5 className="card-title">{post.title}</h5>
-                    <p className="card-text">{post.description}</p>
+                    <h5 className="card-title font-family">{post.title}</h5>
+                    <p className="card-text font-family">{post.description}</p>
                     <p className="card-text">
-                      <small className="text-muted">Published on 
-                      {new Date(post.createdAt).toLocaleDateString()}</small>
+                     
                     </p>
                     <div className='mt-auto'>                    
                     <Link to={`/blog/more/${post._id}`} className="btn btn-success">Read More</Link>
@@ -101,16 +100,13 @@ const Home = () => {
       <section className="mb-5">
         <h3 className="mb-4 text-light">Our Services</h3>
         <div className="row">
-          {Blogs.data && Blogs.data.length > 0 && Blogs.data.map(post => (<div className="col-md-4 d-flex" key={post._id}>
+          {Blogs.data && Blogs.data.length > 0 && Blogs.data.map(post => (<div className="col-md-4 d-flex my-2" key={post._id}>
               <div className="card mb-4 h-100">
                 <img  src={`http://localhost:5000/${post.selectedFile.replace(/\\/g, '/')}`}
             alt={post.title} className='w-100 h-auto'/>
                 <div className="card-body d-flex flex-column flex-grow-1">
                   <h5 className="card-title">{post.title}</h5>
                   <p className="card-text">{post.description}</p>
-                  <p className="card-text">
-                    <small className="text-muted">Published on {new Date(post.createdAt).toLocaleDateString()}</small>
-                  </p>
                   <div className='mt-auto'>
                   <Link to={`/blog/more/${post._id}`} className="btn btn-primary">Learn More</Link>
                   </div>
