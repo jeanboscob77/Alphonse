@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import AOS from 'aos';
+import { Helmet } from 'react-helmet';
 import 'aos/dist/aos.css';
 import axios from 'axios';
 const Contact = () => {
@@ -49,6 +50,9 @@ const [message,setMessage] = useState('')
 
   return (
     <div className='margin-top pt-5'>
+    <Helmet>
+      <title>Contact us</title>
+    </Helmet>
     <div className='contact' data-aos='flip-down'>
       <div className='d-flex justify-content-center my-5'>
       <form style={{ maxWidth: '400px',minWidth: '300px' }} className='bg-form py-3 px-4 h-auto rounded'>

@@ -1,4 +1,5 @@
 import React,{useEffect} from 'react';
+import { Helmet } from 'react-helmet';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -19,6 +20,9 @@ const AboutUs = () => {
 
   return (
     <section className="about-us py-5 bg-light margin-top">
+      <Helmet>
+        <title>about us</title>
+        </Helmet>
       <div className="container pt-5">
         <h1 className="text-center mb-4">About Us</h1>
 

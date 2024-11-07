@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import { useDispatch } from "react-redux";
@@ -59,6 +60,9 @@ const AdminLoginForm = () => {
 
   return (
     <div className='pt-5 mt-5'>
+      <Helmet>
+        <title>control management system</title>
+      </Helmet>
       <div className="container-fluid d-flex justify-content-center align-items-center min-vh-100 pt-5 pb-3 cms"
         data-aos='fade-down'>
         <CmsCard 
