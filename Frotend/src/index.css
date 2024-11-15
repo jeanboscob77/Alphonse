@@ -2,6 +2,9 @@
   min-height: 100vh;
 }
 
+.headering{
+  font-family:  'poppins', sans-serif !important;
+}
 
 /*navbar baclkground color*/
 .bg-blue{
@@ -79,7 +82,7 @@
 .holder{
   width: 100%;
   background-size: cover;
-  background-image: linear-gradient(rgba(81, 81, 207, 0.779), rgba(0, 0, 255, 0.3)), url(./Photos/better.jpg);
+  background-image: linear-gradient(rgba(81, 81, 207, 0.779), rgba(0, 0, 255, 0.3)), url(./Photos/better.webp);
 }
 
 .heading {
@@ -90,7 +93,7 @@
 /*contact page*/
 
 .contact{
-  background-image: url(./Photos/contact.jpg);
+  background-image: url(./Photos/contact.webp);
   width: 100%;
 }
 
@@ -116,7 +119,7 @@ font-size: 16px;
 }
 
 .cms{
-  background-image: url(./Photos/admin.jpg);
+  background-image: url(./Photos/admin.webp);
   width: 100%;
   background-size: cover;
 }
@@ -157,7 +160,7 @@ font-size: 16px;
 .text{
   text-decoration: none;
   color: #E5E7EB;
-  font-family: serif;
+  font-family: Jost,sans-serif;
 }
 
 
@@ -168,3 +171,6 @@ font-size: 16px;
 address{
   padding-top: 20px;
 }
+
+
+

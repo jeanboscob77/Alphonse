@@ -16,7 +16,7 @@ const Services = () => {
   return (
     <div className="margin-top container-fluid">
       <Helmet>
-        <title>Our services</title>
+        <title>Services at Info Tech Scholars Ltd</title>
       </Helmet>
 
       {services.loading ? (
@@ -24,7 +24,7 @@ const Services = () => {
       ) : (
         <div className="mt-4">
           <motion.h1
-            className="text-center"
+            className="text-center headering"
             initial={{ translateX: -100, opacity: 0 }}
             animate={{ translateX: 0, opacity: 1 }}
             transition={{ duration: 5, type: 'spring' }}
@@ -47,7 +47,7 @@ const Services = () => {
                   src={`http://localhost:5000/${item.selectedFile.replace(/\\/g, '/')}`}
                   title={item.title}
                   about={item.description}
-                  path={`/service/more/${item._id}`}
+                  path={`/service/read more/${item._id}`}
                 />
               </motion.div>
             ))}

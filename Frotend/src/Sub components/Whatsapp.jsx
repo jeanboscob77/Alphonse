@@ -6,9 +6,9 @@ const Whatsapp = () => {
   return (
     <motion.div className='whatsapp'
     initial={{x: 0}}
-    animate={{ x: [0, -50, 0],}}
+    animate={{ x: [0, -70, 0],}}
     transition={{
-        duration: 10,
+        duration: 5,
         ease: "easeInOut",
         repeat: Infinity, // Repeat infinitely
         repeatType: "loop", // Type of repeat

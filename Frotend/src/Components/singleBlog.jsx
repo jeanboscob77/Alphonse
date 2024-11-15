@@ -31,7 +31,7 @@ useEffect(()=>{
       transition={{duration: 5, type: 'spring'}}
       >
         <div className="col-md-8 offset-md-2">
-          <h3 className="mt-5 text-center">{service['data'].title}</h3>
+          <h3 className="mt-5 text-center headering">{service['data'].title}</h3>
           <img
             src={`http://localhost:5000/${service['data'].selectedFile}`}
             className="img-fluid rounded mx-auto d-block my-3"

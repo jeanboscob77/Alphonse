@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../Photos/logo.jpg'
+import logo from '../Photos/logo.webp'
 
 const Headers = () => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(true);

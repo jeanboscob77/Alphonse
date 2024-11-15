@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchBlogs } from '../redux/Blogs';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import React from 'react';
 
 const getRecentPosts = (blogs) => {
   const today = new Date();
@@ -50,19 +51,6 @@ const Home = () => {
     <div className="pt-5 mt-5 holder" data-aos='fade-down'>
      <Helmet>
   <title>Info Tech Scholars Ltd - Home | Pathway to Academic and Tech Solutions</title>
-  <meta name="description" content="Welcome to Info Tech Scholars Ltd, your gateway to academic excellence and cutting-edge tech solutions. Discover recent insights, services, and resources tailored to empower your journey." />
-
-  <meta property="og:title" content="Info Tech Scholars Ltd - Your Pathway to Academic & Tech Solutions" />
-  <meta property="og:description" content="Explore Info Tech Scholars Ltd to discover recent blogs, academic guidance, and technology solutions crafted for you." />
-  <meta property="og:image" content="https://www.infotechscholars.com/og-image.jpg" />
-  <meta property="og:url" content="https://www.infotechscholars.com" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Info Tech Scholars Ltd - Academic & Tech Insights" />
-  <meta name="twitter:description" content="Stay updated with our recent posts and services at Info Tech Scholars Ltd." />
-  <meta name="twitter:image" content="https://www.infotechscholars.com/twitter-image.jpg" />
-
-  {/* <meta name="description" content={`Recent Posts: ${recentPosts.slice(0, 3).map(post => post.title).join(", ")}. Discover more at Info Tech Scholars Ltd.`} /> */}
 </Helmet>
 
       <motion.section
@@ -72,7 +60,7 @@ const Home = () => {
       >
         <div className="container">
           <header className="text-center my-4">
-            <h1 className="display-4 heading pt-3 header">INFO TECH SCHOLARS LTD</h1>
+            <h1 className="display-4 heading pt-3 header headering">INFO TECH SCHOLARS LTD</h1>
             <p className="lead fw-bold text-light fs-3">Pathway to Academic and Tech Solutions.</p>
           </header>
 
@@ -96,12 +84,13 @@ const Home = () => {
                           src={`http://localhost:5000/${post.selectedFile}`}
                           alt={post.title}
                           className="w-100 h-auto"
+                          loading="lazy" 
                         />
                         <div className="card-body d-flex flex-column flex-grow-1">
                           <h5 className="card-title font-family">{post.title}</h5>
                           <p className="card-text font-family">{post.description}</p>
                           <div className="mt-auto">
-                            <Link to={`/blog/more/${post._id}`} className="btn btn-success">
+                            <Link to={`/blog/read more/${post._id}`} className="btn btn-success">
                               Read More
                             </Link>
                           </div>
@@ -134,6 +123,7 @@ const Home = () => {
                         src={`http://localhost:5000/${post.selectedFile.replace(/\\/g, '/')}`}
                         alt={post.title}
                         className="w-100 h-auto"
+                        loading="lazy" 
                       />
                       <div className="card-body d-flex flex-column flex-grow-1">
                         <h5 className="card-title">{post.title}</h5>

@@ -21,7 +21,7 @@ const AboutUs = () => {
   return (
     <section className="about-us py-5 bg-light margin-top">
       <Helmet>
-        <title>about us</title>
+        <title>about Info Tech Scholars Ltd</title>
         </Helmet>
       <div className="container pt-5">
         <h1 className="text-center mb-4">About Us</h1>
@@ -29,14 +29,23 @@ const AboutUs = () => {
         <section className="who-we-are mb-5" data-aos='fade-up'>
           <h2 className="text-primary">Who We Are</h2>
           <p>
-            At <strong>INFO TECH SCHOLARS LTD.</strong>, we are a leading technology-driven service provider in Rwanda, dedicated to helping individuals and businesses achieve success in education, career advancement, and digital transformation. Our team is passionate about innovation and committed to delivering high-quality services that enhance your academic and professional journey.
+          NFO TECH SCHOLARS LTD is company dedicated to supporting students and individuals 
+          across different educational levels by providing up-to-date information on scholarships,
+           financial aid, study loans, and job opportunities in Rwanda and abroad. Our expertise lies 
+           in guiding clients through their application processes and offering a 
+           range of technology-driven services that empower the Rwandan community in
+            their journey toward achieving personal and professional goals.
+
           </p>
         </section>
 
         <section className="mission mb-5" data-aos='fade-left'>
           <h2 className="text-primary">Our Mission</h2>
           <p>
-            To simplify access to educational and professional opportunities by providing a one-stop solution for university applications, job applications, visa applications, and technological services tailored to individual needs.
+          To empower Rwandans by delivering accessible and reliable services that connect
+           them to educational and career opportunities, ultimately contributing to individual 
+           success and community growth.
+
           </p>
         </section>
 
@@ -56,14 +65,15 @@ const AboutUs = () => {
         <section className="vision mb-5" data-aos='slide-up'>
           <h2 className="text-primary">Our Vision</h2>
           <p>
-            To be the premier provider of educational and technological services in Rwanda, guiding individuals and organizations towards success through innovative solutions.
+          To be a trusted leader in bridging opportunities and technology, helping Rwandans realize their potential through innovative support and personalized guidance.
+
           </p>
         </section>
 
         <section className="why-choose-us mb-5" data-aos='flip-left'>
           <h2 className="text-primary">Why Choose Us?</h2>
           <p>
-            We offer personalized support, comprehensive solutions, and are committed to delivering top-notch services tailored to your needs.
+          Choose INFO TECH SCHOLARS LTD for dedicated, expert assistance in navigating educational and career pathways. We provide timely updates, expert application support, and We offer an extensive selection of tech services crafted to simplify your journey toward success.
           </p>
         </section>
 

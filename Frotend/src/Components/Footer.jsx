@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fetchService } from '../redux/Services'
+import logo from '../Photos/logo.webp'
 const Footer = () => {
-
   const [isLinkHovered, setIsLinkHovered] = useState('');
-  
-
   function capitalizeText(text) {
     return text
       .toLowerCase() // Convert all text to lowercase
@@ -27,10 +25,10 @@ const Footer = () => {
 
   
   return (
-    <div className='bg-dark mt-auto pt-3'>
+    <div className='bg-dark mt-auto pt-3 w-100 mx-0'>
       <section className='d-flex flex-wrap justify-content-between mx-5 py-5'>
     <div className='d-flex justify-content-start'>
-    <ul className='d-flex list-unstyled gap-4 mx-5'>
+    <ul className='d-flex flex-wrap list-unstyled gap-4 mx-5'>
       <motion.li  
       whileHover={{scale: 1.3}}
       transition={{type: 'spring',stifness: 700,duration: 2}}
@@ -76,7 +74,6 @@ onMouseLeave={() => setIsLinkHovered('')}
        whileHover={{scale: 1.3}}
        transition={{type: 'spring',stifness: 700,duration: 2}}
       >
-        
     <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
     target='_blank'>
     <FaInstagram className={isLinkHovered === 'ig'?'text-w fs-4': 'text-orange fs-4'}
@@ -89,7 +86,6 @@ onMouseLeave={() => setIsLinkHovered('')}
        whileHover={{scale: 1.3}}
        transition={{type: 'spring',stifness: 700,duration: 2}}
       >
-        
     <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
     target='_blank'>
      <FaTiktok className={isLinkHovered === 'tiktok'?'text-w fs-4': 'text-orange fs-4'}
@@ -98,12 +94,10 @@ onMouseLeave={() => setIsLinkHovered('')}
      />
     </Link>
       </motion.li>
-
       <motion.li
        whileHover={{scale: 1.3}}
        transition={{type: 'spring',stifness: 2000,duration: 2}}
       >
-        
     <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
     target='_blank'>
      <FaFacebook className={isLinkHovered === 'facebook'?'text-w fs-4': 'text-orange fs-4'}
@@ -114,25 +108,25 @@ onMouseLeave={() => setIsLinkHovered('')}
       </motion.li>
     </ul>
     </div>
-
 <div>
-  <ul>
+  <ul className='d-none d-sm-block'>
     {
       services.data && services.data.length >
        0 && services.data.length <= 10 && services.data.map((item)=>(
         <li key={item._id} className=''><Link to={`/service/details/${item._id}`}
-        className='text'
+        className='text footer-link'
 >
           {capitalizeText(item.title)}</Link></li>
        ))
     }
   </ul>
 </div>
-
 </section>
 
-
-<div className='d-flex justify-content-center address'>
+<div className='d-flex justify-content-around flex-wrap address'>
+  <Link to='/'>
+  <img src={logo} width={150} className='logo mt-3'/>
+  </Link>
 <address className='text-light'>
         INFO TECH SCHOLARS LTD.<br/>
         Kigali, Rwanda<br/>
@@ -141,11 +135,10 @@ onMouseLeave={() => setIsLinkHovered('')}
           </a><br/>
         Phone: +250 783 871 348
     </address>
+  
 </div>
-
       <p className='text-center text-light'>Info tech scholars Ltd allright reserved &copy; {new Date().getFullYear()}</p>
     </div>
   )
 }
-
 export default Footer
