@@ -9,7 +9,7 @@ const Contact = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 1200,  // Duration of the animation (in milliseconds)
+      duration: 3000,  // Duration of the animation (in milliseconds)
       offset: 100,     // Offset from the top when animation should trigger
       once: false,
       mirror: true      // Whether animation should happen only once
@@ -27,7 +27,7 @@ const [message,setMessage] = useState('')
 
     if(name.trim() !== '' && email.trim() !== '' && message.trim() !== ''){
 
-      axios.post('http://localhost:5000/api/contacts',{name,email,message}).then((res)=>{
+      axios.post('https://infotechscholars.com/api/contacts',{name,email,message}).then((res)=>{
       
         setEmail('')
         setMessage('')
@@ -52,6 +52,11 @@ const [message,setMessage] = useState('')
     <div className='margin-top pt-5'>
     <Helmet>
       <title>Contact us</title>
+      <meta property="og:title" content="Info Tech Scholars Ltd - Pathway to Academic and Tech Solutions" />
+  <meta property="og:description" content="Welcome to Info Tech Scholars Ltd, your gateway to academic excellence and cutting-edge tech solutions." />
+  <meta property="og:image" content="https://infotechscholars.com/path-to-your-image.jpg" />
+  <meta property="og:url" content="https://infotechscholars.com" />
+  <meta name="twitter:card" content="summary_large_image" />
     </Helmet>
     <div className='contact' data-aos='flip-down'>
       <div className='d-flex justify-content-center my-5'>

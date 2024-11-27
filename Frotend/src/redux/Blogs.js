@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchBlogs = createAsyncThunk('fetch/blogs' ,async()=>{
-    const services = await axios.get('http://localhost:5000/api/blogs')
+    const services = await axios.get('https://infotechscholars.com/api/blogs')
     const mydata =  services.data
     return mydata
 })

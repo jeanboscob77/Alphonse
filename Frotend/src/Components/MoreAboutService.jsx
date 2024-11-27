@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
-import { useDispatch,useSelector } from 'react-redux'
-import { fetchApi } from '../redux/ApiSlice'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
@@ -14,7 +12,7 @@ const DetailedService = () => {
 console.log(service);
 
 useEffect(() => {
-    axios.get(`http://localhost:5000/api/services/${id}`)
+    axios.get(`https://infotechscholars.com/api/services/${id}`)
       .then((response) => setService(response.data))
       .catch((error) => console.error("Error fetching service:", error));
   }, [id]); // Make sure `id` is in the dependency array
@@ -33,7 +31,7 @@ useEffect(() => {
         <div className="col-md-8 offset-md-2">
           <h3 className="mt-5 text-center">{service.title}</h3>
           <img
-            src={`http://localhost:5000/${service.selectedFile}`}
+            src={`https://infotechscholars.com/${service.selectedFile}`}
             className="img-fluid rounded mx-auto d-block my-3"
             alt="Service"
           />

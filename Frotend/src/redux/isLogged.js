@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // Async thunk for login
 export const loginUser = createAsyncThunk('auth/login', async (userData) => {
-  const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+  const response = await axios.post('https://infotechscholars.com/api/auth/login', userData);
   return response.data;
 });
 

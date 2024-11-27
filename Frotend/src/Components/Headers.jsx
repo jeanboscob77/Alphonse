@@ -29,7 +29,7 @@ console.log(cms);
         </NavLink>
 
         <button
-          className="navbar-toggler bg-light"
+          className="navbar-toggler bg-light my-3 my-sm-0"
           type="button"
           onClick={handleToggle}
           aria-expanded={!isMenuCollapsed}

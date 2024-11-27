@@ -9,7 +9,7 @@ const {id} = useParams()
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    subServices: [
+    moreInfo: [
       { title: '', notes: '' },
       { title: '', notes: '' },
       { title: '', notes: '' },
@@ -24,9 +24,9 @@ const {id} = useParams()
     // Fetch existing service data on component load
     const fetchService = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/services/${id}`);
-        const { title, description, subServices } = response.data;
-        setFormData({ title, description, subServices });
+        const response = await axios.get(`https://infotechscholars.com/api/services/${id}`);
+        const { title, description, moreInfo } = response.data;
+        setFormData({ title, description, moreInfo });
       } catch (error) {
         console.error('Error fetching service data:', error);
       }
@@ -47,9 +47,9 @@ const {id} = useParams()
   };
 
   const handleSubServiceChange = (index, field, value) => {
-    const updatedSubServices = [...formData.subServices];
+    const updatedSubServices = [...formData.moreInfo];
     updatedSubServices[index][field] = value;
-    setFormData({ ...formData, subServices: updatedSubServices });
+    setFormData({ ...formData, moreInfo: updatedSubServices });
   };
 
   const handleSubmit = async (e) => {
@@ -61,10 +61,10 @@ const {id} = useParams()
     if (selectedFile) {
       data.append('selectedFile', selectedFile);
     }
-    data.append('subServices', JSON.stringify(formData.subServices));
+    data.append('moreInfo', JSON.stringify(formData.moreInfo));
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/services/${id}`, data, {
+      const response = await axios.put(`https://infotechscholars.com/api/services/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -115,7 +115,7 @@ const {id} = useParams()
       </div>
 
       <h3 className='my-2'>Sub Services</h3>
-      {formData.subServices.map((subService, index) => (
+      {formData.moreInfo.map((subService, index) => (
         <div key={index}>
           <div>
             <label className='form-label'>Sub Service {index + 1} Title:</label>

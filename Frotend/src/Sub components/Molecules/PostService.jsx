@@ -5,7 +5,7 @@ const PostService = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    subServices: [
+    moreInfo: [
       { title: '', notes: '' },
       { title: '', notes: '' },
       { title: '', notes: '' },
@@ -32,9 +32,9 @@ const PostService = () => {
 
   // Handle changes for subservice fields
   const handleSubServiceChange = (index, field, value) => {
-    const updatedSubServices = [...formData.subServices];
+    const updatedSubServices = [...formData.moreInfo];
     updatedSubServices[index][field] = value;
-    setFormData({ ...formData, subServices: updatedSubServices });
+    setFormData({ ...formData, moreInfo: updatedSubServices });
   };
 
   // Handle form submission
@@ -48,11 +48,11 @@ const PostService = () => {
     data.append('selectedFile', selectedFile); // Add the selected file
 
     // Append subservices to FormData as a JSON string
-    data.append('subServices', JSON.stringify(formData.subServices)); 
+    data.append('moreInfo', JSON.stringify(formData.moreInfo)); 
 
     try {
       // Send POST request to your API
-      const response = await axios.post('http://localhost:5000/api/services', data, {
+      const response = await axios.post('https://infotechscholars.com/api/services', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -104,7 +104,7 @@ const PostService = () => {
       </div>
 
       <h3 className='my-2'>Sub Services</h3>
-      {formData.subServices.map((subService, index) => (
+      {formData.moreInfo.map((subService, index) => (
         <div key={index}>
           <div>
             <label className='form-label'>Sub Service {index + 1} Title:</label>

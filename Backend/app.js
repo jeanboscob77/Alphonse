@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 const blogRoutes = require('./routes/blogRoutes'); // Import the routes
@@ -19,11 +18,6 @@ const app = express();
 
 app.use(cors());
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/your_database', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
 
 // Middleware to parse JSON data
 app.use(express.json());

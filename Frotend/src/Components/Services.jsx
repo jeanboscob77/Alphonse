@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ServiceCard from '../Sub components/ServiceCard'
 import { fetchService } from '../redux/Services'
 
+
 const Services = () => {
   const dispatch = useDispatch()
   const services = useSelector(state => state.services)
@@ -33,9 +34,9 @@ const Services = () => {
           </motion.h1>
 
           <div className="container m-5 d-flex flex-wrap justify-content-between">
-            {services.data && services.data.length > 0 && services.data.map((item) => (
+            {services['data']&& services['data'].length > 0 && services['data'].map((item) => (
               <motion.div
-                key={item._id}
+                key={item.id}
                 className="d-flex"
                 style={{ flex: '1 1 calc(33.33% - 20px)', margin: '10px' }}
                 initial={{ opacity: 0, scale: 0.2 }}  // Start smaller
@@ -44,10 +45,10 @@ const Services = () => {
                 viewport={{ once: false, amount: 0.3 }} // Trigger when 30% of the element is in view
               >
                 <ServiceCard
-                  src={`http://localhost:5000/${item.selectedFile.replace(/\\/g, '/')}`}
+                  src={`https://infotechscholars.com/${item.selectedFile.replace(/\\/g, '/')}`}
                   title={item.title}
                   about={item.description}
-                  path={`/service/read more/${item._id}`}
+                  path={`/service/read more/${item.id}`}
                 />
               </motion.div>
             ))}

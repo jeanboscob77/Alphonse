@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const UpdateHome = () => {
-  const navigate = useNavigate();
   const { id } = useParams(); // Get the ID of the post to update
 
   const [formData, setFormData] = useState({
@@ -22,7 +21,7 @@ const UpdateHome = () => {
 
   useEffect(() => {
     // Fetch the existing post data using Axios
-    axios.get(`http://localhost:5000/api/blogs/${id}`)
+    axios.get(`https://infotechscholars.com/api/blogs/${id}`)
       .then(response => {
         const { title, description, moreInfo } = response.data;
         setFormData({
@@ -64,8 +63,8 @@ const UpdateHome = () => {
     data.append('moreInfo', JSON.stringify(formData.moreInfo));
 
     try {
-      await axios.put(`http://localhost:5000/api/blogs/${id}`, data);
-      navigate('/admin/dashboard');
+      await axios.put(`https://infotechscholars.com/api/blogs/${id}`, data);
+      alert('blog updated correctly!!!!')
     } catch (error) {
       console.error("There was an error updating the post!", error);
     }

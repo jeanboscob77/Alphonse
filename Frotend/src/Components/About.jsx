@@ -9,7 +9,7 @@ const AboutUs = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 1200,  // Duration of the animation (in milliseconds)
+      duration: 3000,  // Duration of the animation (in milliseconds)
       offset: 100,     // Offset from the top when animation should trigger
       once: false,
       mirror: true      // Whether animation should happen only once

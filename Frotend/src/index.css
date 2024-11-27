@@ -35,6 +35,10 @@
   font-family: 'Times New Roman', Times, serif;
 }
 
+.sloga{
+  color: #E5E7EB;
+}
+
 .navbar-collapse {
   overflow: hidden;
 }
@@ -166,7 +170,6 @@ font-size: 16px;
 
 .address{
   border-top: 2px solid white;
-  margin: 20px 30px;
 }
 address{
   padding-top: 20px;
@@ -174,3 +177,20 @@ address{
 
 
 
+
+.copy{
+  border-top: 1px solid white;
+  margin: 10px 20px;
+  padding: 4px 0;
+}
+
+
+@media (max-width: 768px) {
+  .footing {
+   margin-top: 20px;
+
+  }
+}
+a{
+  text-decoration: none;
+}

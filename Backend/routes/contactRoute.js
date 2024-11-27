@@ -1,103 +1,95 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../Models/Contact')
+const connection = require('./db'); // Import MySQL connection
 
-
-// Route to retrieve a single service by ID
+// Route to retrieve all contacts
 router.get('/contacts', async (req, res) => {
     try {
-      const contacts = await Contact.find();
-      if (!contacts) {
-        return res.status(404).json({ error: 'contact not found' });
-      }
-      res.json(contacts);
+        const query = 'SELECT * FROM contacts';
+        connection.query(query, (err, results) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Failed to retrieve contacts' });
+            }
+            res.json(results);
+        });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to retrieve contact' });
+        console.error(error);
+        res.status(500).json({ error: 'Failed to retrieve contacts' });
     }
-  });
-  
+});
 
-// Route to update a service by IDtry {
-    router.post('/contacts', async (req, res) => {
-        try {
-          const { name, email,message } = req.body;
-      
-          // Create a new service document
-          const contact = new Contact({
-            name,
-            email,
-            message,
-          });
-      
-          // Save the service in the database
-          await contact.save();
-          res.status(201).json(contact);
-        } catch (error) {
-          res.status(500).json({ error: 'Failed to create service' });
-        }
-      });
-// Route to handle contact retrieve by ID
+// Route to create a new contact
+router.post('/contacts', async (req, res) => {
+    try {
+        const { name, email, message } = req.body;
+        
+        const query = 'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)';
+        connection.query(query, [name, email, message], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Failed to create contact' });
+            }
+            res.status(201).json({
+                id: result.insertId,
+                name,
+                email,
+                message
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to create contact' });
+    }
+});
 
+// Route to update a contact by ID
 router.put('/contacts/:id', async (req, res) => {
     try {
-      const { name, email, message } = req.body;
-     
-  
-      const updatedcontact = await Contact.findByIdAndUpdate(
-        req.params.id,
-        { name, email, message },
-        { new: true } // Return the updated document
-      );
-  
-      if (!updatedcontact) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json(updatedcontact);
+        const { name, email, message } = req.body;
+        const contactId = req.params.id;
+
+        const query = 'UPDATE contacts SET name = ?, email = ?, message = ? WHERE id = ?';
+        connection.query(query, [name, email, message, contactId], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Failed to update contact' });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Contact not found' });
+            }
+
+            res.json({ id: contactId, name, email, message });
+        });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to update blog' });
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update contact' });
     }
-  });
+});
 
-
-
-// Route to update a service by ID
-router.put('/contacts/:id', async (req, res) => {
+// Route to delete a contact by ID
+router.delete('/contacts/:id', async (req, res) => {
     try {
-      const { name, email, message } = req.body;
-     
-  
-      const updatedcontact = await Contact.findByIdAndUpdate(
-        req.params.id,
-        { name, email, message },
-        { new: true } // Return the updated document
-      );
-  
-      if (!updatedcontact) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json(updatedcontact);
+        const contactId = req.params.id;
+
+        const query = 'DELETE FROM contacts WHERE id = ?';
+        connection.query(query, [contactId], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: 'Failed to delete contact' });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Contact not found' });
+            }
+
+            res.json({ message: 'Contact deleted successfully' });
+        });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to update blog' });
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete contact' });
     }
-  });
-  
-  // Route to delete a service by ID
-  router.delete('/contacts/:id', async (req, res) => {
-    try {
-      const deletedContact = await Contact.findByIdAndDelete(req.params.id);
-      if (!deletedContact) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ message: 'Blog deleted successfully' });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to delete blog' });
-    }
-  });
+});
 
-
-
-  module.exports = router; 
+module.exports = router;

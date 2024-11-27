@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const Blog = require('../Models/Blog'); // Import your Blog model
+const connection = require('./db');  // Import MySQL connection
 
 const router = express.Router();
 
@@ -17,93 +17,92 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Route that retrieves all blogs from the database
-router.get('/blogs', async (req, res) => {
-  try {
-    const blogs = await Blog.find();
-    res.json(blogs);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to retrieve blogs' });
-  }
+router.get('/blogs', (req, res) => {
+  const query = 'SELECT * FROM blogs';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to retrieve blogs' });
+    }
+    res.json(results);
+  });
 });
 
 // Route to retrieve a single blog by ID
-router.get('/blogs/:id', async (req, res) => {
-  try {
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) {
+router.get('/blogs/:id', (req, res) => {
+  const query = 'SELECT * FROM blogs WHERE id = ?';
+  connection.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to retrieve blog' });
+    }
+    if (results.length === 0) {
       return res.status(404).json({ error: 'Blog not found' });
     }
-    res.json(blog);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to retrieve blog' });
-  }
+    res.json(results[0]);
+  });
 });
 
 // Route to handle blog creation with image upload
-router.post('/blogs', upload.single('selectedFile'), async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
-    
-    // Directly use the subServices from req.body
-    const moreInfo = JSON.parse(req.body.moreInfo); // Parse the subServices JSON string
-  
+router.post('/blogs', upload.single('selectedFile'), (req, res) => {
+  const { title, description } = req.body;
+  const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+  const moreInfo = req.body.moreInfo ? JSON.parse(req.body.moreInfo) : null; // Parse the moreInfo JSON string
 
-    // Create a new blog document
-    const blog = new Blog({
+  const query = 'INSERT INTO blogs (title, description, selectedFile, moreInfo) VALUES (?, ?, ?, ?)';
+  connection.query(query, [title, description, selectedFile, JSON.stringify(moreInfo)], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to create blog' });
+    }
+    res.status(201).json({
+      id: results.insertId,
       title,
       description,
       selectedFile,
       moreInfo
     });
-
-    // Save the blog in the database
-    await blog.save();
-    res.status(201).json(blog);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create blog' });
-  }
+  });
 });
 
 // Route to update a blog by ID
-router.put('/blogs/:id', upload.single('selectedFile'), async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
-     // Directly use the subServices from req.body
-     const moreInfo = JSON.parse(req.body.moreInfo); // Parse the subServices JSON string
-  
+router.put('/blogs/:id', upload.single('selectedFile'), (req, res) => {
+  const { title, description } = req.body;
+  const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+  const moreInfo = req.body.moreInfo ? JSON.parse(req.body.moreInfo) : null; // Parse the moreInfo JSON string
 
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { title, description, selectedFile,moreInfo },
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedBlog) {
+  const query = 'UPDATE blogs SET title = ?, description = ?, selectedFile = ?, moreInfo = ? WHERE id = ?';
+  connection.query(query, [title, description, selectedFile, JSON.stringify(moreInfo), req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to update blog' });
+    }
+    if (results.affectedRows === 0) {
       return res.status(404).json({ error: 'Blog not found' });
     }
-    res.json(updatedBlog);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to update blog' });
-  }
+    res.json({
+      id: req.params.id,
+      title,
+      description,
+      selectedFile,
+      moreInfo
+    });
+  });
 });
 
 // Route to delete a blog by ID
-router.delete('/blogs/:id', async (req, res) => {
-  try {
-    const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
-    if (!deletedBlog) {
+router.delete('/blogs/:id', (req, res) => {
+  const query = 'DELETE FROM blogs WHERE id = ?';
+  connection.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to delete blog' });
+    }
+    if (results.affectedRows === 0) {
       return res.status(404).json({ error: 'Blog not found' });
     }
     res.json({ message: 'Blog deleted successfully' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to delete blog' });
-  }
+  });
 });
 
-module.exports = router; // Export the router
+module.exports = router;  // Export the router

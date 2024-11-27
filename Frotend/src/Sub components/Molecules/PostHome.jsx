@@ -66,9 +66,9 @@ const PostHome = () => {
     data.append('moreInfo', JSON.stringify(formData.moreInfo)); 
 
     const result = dispatch(postData(data));
-    // if(result){
-    //   navigate('/admin/dashboard');
-    // }
+    if(result){
+     alert("blog created!!!")
+     }
   }
 
   return (

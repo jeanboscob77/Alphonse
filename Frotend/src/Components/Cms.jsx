@@ -14,7 +14,7 @@ const AdminLoginForm = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 1200,  // Duration of the animation (in milliseconds)
+      duration: 3000,  // Duration of the animation (in milliseconds)
       offset: 100,     // Offset from the top when animation should trigger
       once: false,
       mirror: true      // Whether animation should happen only once
@@ -62,6 +62,11 @@ const AdminLoginForm = () => {
     <div className='pt-5 mt-5'>
       <Helmet>
         <title>control management system</title>
+        <meta property="og:title" content="Info Tech Scholars Ltd - Pathway to Academic and Tech Solutions" />
+  <meta property="og:description" content="Welcome to Info Tech Scholars Ltd, your gateway to academic excellence and cutting-edge tech solutions." />
+  <meta property="og:image" content="https://infotechscholars.com/path-to-your-image.jpg" />
+  <meta property="og:url" content="https://infotechscholars.com" />
+  <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       <div className="container-fluid d-flex justify-content-center align-items-center min-vh-100 pt-5 pb-3 cms"
         data-aos='fade-down'>

@@ -37,7 +37,7 @@ const HomeTable = () => {
  
 const handleDelete = (id)=>{
   const deletedPost = confirm('This will be deleted!!!')
-  deletedPost && axios.delete(`http://localhost:5000/api/blogs/${id}`)
+  deletedPost && axios.delete(`https://infotechscholars.com/api/blogs/${id}`)
   window.location.reload()
 }
 
@@ -65,20 +65,20 @@ const handleDelete = (id)=>{
         </thead>
         <tbody>
             {
-                blogs.data.map((post,i)=><tr key={post._id}>
+                blogs.data.map((post,i)=><tr key={post.id}>
                     <td>{post.title}</td>
                     <td>{post.description}</td>
-                    <td><img src={`http://localhost:5000/${post.selectedFile}`}
+                    <td><img src={`https://infotechscholars.com/${post.selectedFile}`}
                      alt='title'
                      width={30} height={30}/></td>
-                    <td>{post.date}</td>
+                    <td>{post.created_at}</td>
                     <td className='d-flex'>
                   
-                <Link to={`/update/blog/${post._id}`}>
+                <Link to={`/update/blog/${post.id}`}>
                 <MdEdit className='h5 mx-1'/>
                 </Link>
                <Link to='#'>
-               <MdDelete className='h5 text-danger' onClick={()=>handleDelete(post._id)}/>
+               <MdDelete className='h5 text-danger' onClick={()=>handleDelete(post.id)}/>
                </Link>
               
                     </td>

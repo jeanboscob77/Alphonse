@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaTwitter, FaWhatsapp } from 'react-icons/fa'
+import { FaFacebook,  FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { fetchService } from '../redux/Services'
-import logo from '../Photos/logo.webp'
+
 const Footer = () => {
   const [isLinkHovered, setIsLinkHovered] = useState('');
   function capitalizeText(text) {
@@ -26,9 +26,58 @@ const Footer = () => {
   
   return (
     <div className='bg-dark mt-auto pt-3 w-100 mx-0'>
-      <section className='d-flex flex-wrap justify-content-between mx-5 py-5'>
-    <div className='d-flex justify-content-start'>
-    <ul className='d-flex flex-wrap list-unstyled gap-4 mx-5'>
+      <section className='d-grid d-md-flex gap-3" justify-content-around flex-wrap py-5'>
+
+
+
+
+<div className=' my-sm-4 my-xs-4'>
+  <h5 className='text-light'>LOCATION</h5>
+
+  <div className='text-light'>
+        INFO TECH SCHOLARS LTD.<br/>
+        Kigali, Rwanda<br/>
+    </div>
+  
+</div>
+
+
+
+<div className='my-sm-4 my-xs-4'>
+
+
+  
+<h5 className='text-light footing'>SERVICES</h5>
+
+<ul>
+  {
+    services.data && services.data.length >
+     0 && services.data.length <= 10 && services.data.map((item)=>(
+      <li key={item.id} className=''><Link to={`/service/details/${item.id}`}
+      className='text'
+>
+        {capitalizeText(item.title)}</Link></li>
+     ))
+  }
+</ul>
+</div>
+
+
+<div className='text-light  my-sm-4 footing'>
+  <h5 className='text-light'>CONTACT</h5>
+ Email: <a href="mailto:infotechscholars1@gmail.com?subject=Hello%20there&body=I%20am%20interested%20in%20your%20services."
+ className='text-light'>
+        infotechscholars1@gmail.com
+          </a><br/>
+  Phone: +250 783 871 348<br/>
+  Phone: +250 725 849 807 <br/>
+  Phone: +250 787 941 644
+</div>
+
+
+    <div className=' my-sm-4  d-sm-block'>
+      <h5 className='text-light my-sm-5 footing'>SOCIAL MEDIA</h5>
+    <ul className='d-flex list-unstyled gap-4'>
       <motion.li  
       whileHover={{scale: 1.3}}
       transition={{type: 'spring',stifness: 700,duration: 2}}
@@ -47,7 +96,7 @@ onMouseLeave={() => setIsLinkHovered('')}
        transition={{type: 'spring',stifness: 1000,duration: 2}}
       >
  
-      <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
+      <Link  to="https://www.linkedin.com/in/hagenimana-alphonse-70ba29263/"
     target='_blank'>
         <FaLinkedin className={isLinkHovered === 'linkedin'?'text-w fs-4': 'text-orange fs-4'}
 
@@ -61,7 +110,7 @@ onMouseLeave={() => setIsLinkHovered('')}
        transition={{type: 'spring',stifness: 1000,duration: 2}}
       >
         
-    <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
+    <Link  to="https://x.com/100_dieu"
     target='_blank'>
       <FaTwitter className={isLinkHovered === 'twitter'?'text-w fs-4': 'text-orange fs-4'}
 
@@ -70,35 +119,12 @@ onMouseLeave={() => setIsLinkHovered('')}
       />
     </Link>
       </motion.li>
-      <motion.li
-       whileHover={{scale: 1.3}}
-       transition={{type: 'spring',stifness: 700,duration: 2}}
-      >
-    <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
-    target='_blank'>
-    <FaInstagram className={isLinkHovered === 'ig'?'text-w fs-4': 'text-orange fs-4'}
-       onMouseEnter={() => setIsLinkHovered('ig')}
-       onMouseLeave={() => setIsLinkHovered('')}
-    />
-    </Link>
-      </motion.li>
-      <motion.li
-       whileHover={{scale: 1.3}}
-       transition={{type: 'spring',stifness: 700,duration: 2}}
-      >
-    <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
-    target='_blank'>
-     <FaTiktok className={isLinkHovered === 'tiktok'?'text-w fs-4': 'text-orange fs-4'}
-       onMouseEnter={() => setIsLinkHovered('tiktok')}
-       onMouseLeave={() => setIsLinkHovered('')}
-     />
-    </Link>
-      </motion.li>
+    
       <motion.li
        whileHover={{scale: 1.3}}
        transition={{type: 'spring',stifness: 2000,duration: 2}}
       >
-    <Link  to="https://wa.me/250783871348?text=Hello%20I'm%20interested%20in%20your%20services"
+    <Link  to="https://web.facebook.com/hagenimana.alphonse.7161"
     target='_blank'>
      <FaFacebook className={isLinkHovered === 'facebook'?'text-w fs-4': 'text-orange fs-4'}
        onMouseEnter={() => setIsLinkHovered('facebook')}
@@ -108,36 +134,12 @@ onMouseLeave={() => setIsLinkHovered('')}
       </motion.li>
     </ul>
     </div>
-<div>
-  <ul className='d-none d-sm-block'>
-    {
-      services.data && services.data.length >
-       0 && services.data.length <= 10 && services.data.map((item)=>(
-        <li key={item._id} className=''><Link to={`/service/details/${item._id}`}
-        className='text footer-link'
->
-          {capitalizeText(item.title)}</Link></li>
-       ))
-    }
-  </ul>
-</div>
+
+
+
 </section>
 
-<div className='d-flex justify-content-around flex-wrap address'>
-  <Link to='/'>
-  <img src={logo} width={150} className='logo mt-3'/>
-  </Link>
-<address className='text-light'>
-        INFO TECH SCHOLARS LTD.<br/>
-        Kigali, Rwanda<br/>
-       Email: <a href="mailto:infotechscholars1@gmail.com?subject=Hello%20there&body=I%20am%20interested%20in%20your%20services.">
-        infotechscholars1@gmail.com
-          </a><br/>
-        Phone: +250 783 871 348
-    </address>
-  
-</div>
-      <p className='text-center text-light'>Info tech scholars Ltd allright reserved &copy; {new Date().getFullYear()}</p>
+      <p className='text-center text-light copy'> &copy; Copyright {new Date().getFullYear()}. All Rights reserved</p>
     </div>
   )
 }

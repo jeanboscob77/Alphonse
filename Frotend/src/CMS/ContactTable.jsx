@@ -22,7 +22,7 @@ const ContactTable = () => {
   const contacts = useSelector(state=>state.api)
 
   useEffect(()=>{
-     dispatch(fetchApi('http://localhost:5000/api/contacts'))
+     dispatch(fetchApi('https://infotechscholars.com/api/contacts'))
   },[])
 
 
@@ -42,16 +42,15 @@ const ContactTable = () => {
         </thead>
         <tbody>
          {
-            contacts.data && contacts.data.length > 0 && contacts.data.map((item)=><tr key={item._id}>
+            contacts.data && contacts.data.length > 0 && contacts.data.map((item)=><tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.message}</td>
-                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
             </tr>)
          }
         </tbody>
       </table>
-      : <h1 className='text-center text-warning'>No people contacted you 😭😭😭</h1>
+      : <h1 className='text-center text-warning'>No people contacted you</h1>
     }
     </div>
   )

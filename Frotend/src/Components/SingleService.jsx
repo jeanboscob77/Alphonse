@@ -16,8 +16,13 @@ const service = useSelector(state=>state.api)
 console.log(service);
 
 
+const moreInfo = service.data?.moreInfo
+    ? JSON.parse(service.data.moreInfo)
+    : [];
+
+
 useEffect(()=>{
-   dispatch(fetchApi(`http://localhost:5000/api/services/${id}`))
+   dispatch(fetchApi(`https://infotechscholars.com/api/services/${id}`))
 },[])
 
   return (
@@ -34,16 +39,16 @@ useEffect(()=>{
         <div className="col-md-8 offset-md-2">
           <h3 className="mt-5 pt-5 text-center headering fw-bold">{service['data'].title}</h3>
           <img
-            src={`http://localhost:5000/${service['data'].selectedFile}`}
+            src={`https://infotechscholars.com/${service['data'].selectedFile}`}
             className="img-fluid rounded mx-auto d-block my-3"
             alt="Service"
           />
           <div className="mb-4">{service['data'].description}</div>
           <div>
             <h4 className="mt-4">Our service includes</h4>
-            {service.data.subServices && service.data.subServices.length > 0 ? (
-              service.data.subServices.map((item) => (
-                <div key={item._id} className="mb-3">
+            {moreInfo && moreInfo.length > 0 ? (
+              moreInfo.map((item) => (
+                <div key={item.id} className="mb-3">
                   <h4>{item.title}</h4>
                   <p>{item.notes}</p>
                 </div>

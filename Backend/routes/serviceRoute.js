@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const Service = require('../Models/Service'); // Import your Service model
+const connection = require('./db'); // Import MySQL connection
 
 const router = express.Router();
 
@@ -16,93 +16,93 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Route that retrieves data from the database
-router.get('/services', async (req, res) => {
-  try {
-    const services = await Service.find();
-    res.json(services);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to retrieve services' });
-  }
+// Route that retrieves all services from the database
+router.get('/services', (req, res) => {
+  const query = 'SELECT * FROM services';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to retrieve services' });
+    }
+    res.json(results);
+  });
 });
 
-
 // Route to retrieve a single service by ID
-router.get('/services/:id', async (req, res) => {
-    try {
-      const service = await Service.findById(req.params.id);
-      if (!service) {
-        return res.status(404).json({ error: 'Service not found' });
-      }
-      res.json(service);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to retrieve service' });
+router.get('/services/:id', (req, res) => {
+  const query = 'SELECT * FROM services WHERE id = ?';
+  connection.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to retrieve service' });
     }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+    res.json(results[0]);
   });
-  router.post('/services', upload.single('selectedFile'), async (req, res) => {
-    console.log('Received body:', req.body);  // Log incoming data
-    console.log('Received file:', req.file);  // Log uploaded file
-  
-    const { title, description } = req.body;
-    const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
-    
-    // Directly use the subServices from req.body
-    const subServices = JSON.parse(req.body.subServices); // Parse the subServices JSON string
-  
-    const newService = new Service({
+});
+
+// Route to handle service creation with image upload
+router.post('/services', upload.single('selectedFile'), (req, res) => {
+  const { title, description } = req.body;
+  const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+  const moreInfo = req.body.moreInfo ? JSON.parse(req.body.moreInfo) : null; // Parse the moreInfo JSON string
+
+  const query = 'INSERT INTO services (title, description, selectedFile, moreInfo) VALUES (?, ?, ?, ?)';
+  connection.query(query, [title, description, selectedFile, JSON.stringify(moreInfo)], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to create service' });
+    }
+    res.status(201).json({
+      id: results.insertId,
       title,
       description,
       selectedFile,
-      subServices
+      moreInfo
     });
-  
-    try {
-      const savedService = await newService.save();
-      res.status(201).json(savedService);
-    } catch (err) {
-      console.error('Error:', err);
-      res.status(400).json({ message: err.message });
-    }
   });
-  
-
+});
 
 // Route to update a service by ID
-router.put('/services/:id', upload.single('selectedFile'), async (req, res) => {
-    try {
-      const { title, description } = req.body;
-      const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
-      const subServices = JSON.parse(req.body.subServices); // Parse the subServices JSON string
-      const updatedService = await Service.findByIdAndUpdate(
-        req.params.id,
-        { title, description, selectedFile,subServices },
-        { new: true } // Return the updated document
-      );
-  
-      if (!updatedService) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json(updatedService);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to update blog' });
-    }
-  });
-  
-  // Route to delete a service by ID
-  router.delete('/services/:id', async (req, res) => {
-    try {
-      const deletedService = await Service.findByIdAndDelete(req.params.id);
-      if (!deletedService) {
-        return res.status(404).json({ error: 'Blog not found' });
-      }
-      res.json({ message: 'Blog deleted successfully' });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Failed to delete blog' });
-    }
-  });
+router.put('/services/:id', upload.single('selectedFile'), (req, res) => {
+  const { title, description } = req.body;
+  const selectedFile = req.file ? req.file.path : null; // Get the uploaded file path
+  const moreInfo = req.body.moreInfo ? JSON.parse(req.body.moreInfo) : null; // Parse the moreInfo JSON string
 
-module.exports = router; // Export the router
+  const query = 'UPDATE services SET title = ?, description = ?, selectedFile = ?, moreInfo = ? WHERE id = ?';
+  connection.query(query, [title, description, selectedFile, JSON.stringify(moreInfo), req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to update service' });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+    res.json({
+      id: req.params.id,
+      title,
+      description,
+      selectedFile,
+      moreInfo
+    });
+  });
+});
+
+// Route to delete a service by ID
+router.delete('/services/:id', (req, res) => {
+  const query = 'DELETE FROM services WHERE id = ?';
+  connection.query(query, [req.params.id], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Failed to delete service' });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+    res.json({ message: 'Service deleted successfully' });
+  });
+});
+
+module.exports = router;  // Export the router

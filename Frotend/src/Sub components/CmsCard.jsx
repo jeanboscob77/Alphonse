@@ -18,7 +18,7 @@ const CmsCard = ({ handleSubmit, handleChange, formData}) => {
   return (
     <div className="card shadow-lg pt-5 mt-5" style={{ maxWidth: "400px", width: "100%" }}>
       <div className="card-header bg-primary text-white text-center pt-5">
-        <h3>Admin Login</h3>
+        <h3>Staff Login</h3>
       </div>
       <div className="card-body p-4">
         <form onSubmit={onSubmit}>

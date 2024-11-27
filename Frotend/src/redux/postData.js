@@ -4,7 +4,7 @@ import axios from "axios";
 // Create async thunk for the POST request
 export const postData = createAsyncThunk('postData', async (data, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/blogs', data);
+        const response = await axios.post('https://infotechscholars.com/api/blogs', data);
         return response.data;  // No need to await response.data
     } catch (error) {
         // Return a rejected value to be handled in the reducer
