@@ -116,7 +116,7 @@ const Home = () => {
           )}
 
           <section className="mb-5">
-            <h3 className="mb-4 text-light">Our Services</h3>
+            <h3 className="mb-4 text-light">Our Blogs</h3>
             <div className="row">
               {Blogs['data'] &&
                 Blogs['data'].length > 0 &&

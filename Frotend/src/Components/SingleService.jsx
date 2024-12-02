@@ -5,7 +5,6 @@ import { fetchApi } from '../redux/ApiSlice'
 import { useParams } from 'react-router-dom'
 
 
-
 const SingleService = () => {
 
 
@@ -23,7 +22,7 @@ const moreInfo = service.data?.moreInfo
 
 useEffect(()=>{
    dispatch(fetchApi(`https://infotechscholars.com/api/services/${id}`))
-},[])
+},[id])
 
   return (
     <div className="container mt-5">

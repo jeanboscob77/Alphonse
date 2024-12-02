@@ -57,7 +57,7 @@ const SingleBlog = () => {
 
               {/* More Info Section */}
               <div>
-                <h4 className="mt-4">Our Service Includes:</h4>
+                <h4 className="mt-4">Details About Blog:</h4>
                 {moreInfo && moreInfo.length > 0 ? (
                   moreInfo.map((item, index) => (
                     <div key={index} className="mb-3">
@@ -66,7 +66,7 @@ const SingleBlog = () => {
                     </div>
                   ))
                 ) : (
-                  <p>No sub-services available.</p>
+                  <p>No Blogs available.</p>
                 )}
               </div>
             </div>
